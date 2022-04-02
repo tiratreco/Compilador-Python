@@ -1,16 +1,26 @@
-# This is a sample Python script.
+from antlr4 import *
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from gen.customLexer import customLexer
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    program = ""
+    with open('input.py') as file:
+        for line in file:
+            program += line
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    data = InputStream(program)
+    # Lexer
+    lexer = customLexer(data)
+    stream = CommonTokenStream(lexer)
+    symbol_table = lexer.getSymbolTable()
+
+    max_len = 5
+    for token, _ in symbol_table:
+        max_len = max(max_len, len(token))
+
+    str_out = "Token{}|Tipo\n".format(' '*(max_len-5))
+    for token, type in symbol_table:
+        str_out += "{}{}|{}\n".format(token, ' '*(max_len-len(token)), type)
+
+    with open('output.txt', 'w') as file:
+        file.write(str_out)

@@ -1,0 +1,97 @@
+Token    |Tipo
+for      |FOR
+i        |ID
+in       |IN
+range    |RANGE
+(        |OPEN
+1        |NUM
+,        |COMMA
+100      |NUM
+)        |CLOSE
+:        |COLON
+
+        |NL
+         |TAB
+if       |IF
+i        |ID
+%        |MODULUS
+3        |NUM
+==       |EQ
+0        |NUM
+or       |OR
+i        |ID
+%        |MODULUS
+5        |NUM
+==       |EQ
+0        |NUM
+:        |COLON
+
+        |NL
+         |TAB
+         |TAB
+print    |PRINT
+(        |OPEN
+i        |ID
+)        |CLOSE
+
+        |NL
+
+        |NL
+penultimo|ID
+,        |COMMA
+ultimo   |ID
+=        |ASSIGNMENT
+0        |NUM
+,        |COMMA
+1        |NUM
+
+        |NL
+soma     |ID
+=        |ASSIGNMENT
+0        |NUM
+
+        |NL
+while    |WHILE
+ultimo   |ID
+<=       |LE
+4000000  |NUM
+:        |COLON
+
+        |NL
+         |TAB
+if       |IF
+ultimo   |ID
+%        |MODULUS
+2        |NUM
+==       |EQ
+0        |NUM
+:        |COLON
+
+        |NL
+         |TAB
+         |TAB
+soma     |ID
+=        |ASSIGNMENT
+soma     |ID
++        |PLUS
+ultimo   |ID
+
+        |NL
+         |TAB
+penultimo|ID
+,        |COMMA
+ultimo   |ID
+=        |ASSIGNMENT
+ultimo   |ID
+,        |COMMA
+penultimo|ID
++        |PLUS
+ultimo   |ID
+
+        |NL
+print    |PRINT
+(        |OPEN
+soma     |ID
+)        |CLOSE
+
+        |NL
