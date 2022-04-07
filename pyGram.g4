@@ -34,6 +34,9 @@ function: DEF TYPE ID OPEN params CLOSE COLON local RETURN expr SEMI_COLON BRACK
         | DEF VOID ID OPEN params CLOSE COLON local BRACKET
         ;
 
+function_call: ID OPEN factor CLOSE SEMI_COLON
+        ;
+
 params  : TYPE ID params2
         |
         ;
@@ -132,6 +135,7 @@ factor  : OPEN expr CLOSE
         | STR_VALUE
         | BOOL_VALUE
         | r_input
+        | function_call
         ;
 
 r_input: INPUT OPEN CLOSE;
@@ -199,6 +203,6 @@ ID: [a-zA-Z][a-zA-Z0-9]*;
 NUM: [0-9]+;
 FLOAT_VALUE: [0-9]+[.][0-9]+;
 STR_VALUE: ["].*["];
-BOOL_VALUE: 'True' | 'FALSE';
+BOOL_VALUE: 'True' | 'False';
 
 WS: [ \t\r\n] -> skip;
