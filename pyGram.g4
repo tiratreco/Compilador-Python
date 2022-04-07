@@ -11,37 +11,63 @@ global  : declaration global
 main: MAIN OPEN CLOSE COLON local BRACKET
 ;
 
-local   : r_for local
-        | r_while local
-        | r_if local
+local   : r_for loop BRACKET local
+        | r_while loop BRACKET  local
+        | r_if local BRACKET r_else local BRACKET local
+        | r_if local BRACKET local
         | r_print local
         | r_input local
         | assigment local
         | function_call SEMI_COLON
-        | RETURN expr SEMI_COLON
-        | RETURN SEMI_COLON
         |
 ;
 
-loop: r_for loop
-    | r_while loop
-    | r_loop_if loop
+loop: r_for loop BRACKET loop
+    | r_while loop BRACKET  loop
+    | r_if loop BRACKET r_else loop BRACKET loop
+    | r_if loop BRACKET loop
+    | r_break loop
     | r_print loop
     | r_input loop
     | assigment loop
-    | r_break loop
     | function_call SEMI_COLON
-    | RETURN expr SEMI_COLON
-    | RETURN SEMI_COLON
     |
     ;
 
-function: DEF TYPE ID OPEN params CLOSE COLON local BRACKET
+local_f : r_for loop BRACKET local_f
+        | r_while loop BRACKET  local_f
+        | r_if local_f BRACKET r_else local_f BRACKET local_f
+        | r_if local_f BRACKET local_f
+        | r_print local_f
+        | r_input local_f
+        | assigment local_f
+        | function_call SEMI_COLON
+        | r_return local_f
+        |
+;
+
+loop_f  : r_for loop_f BRACKET loop_f
+        | r_while loop_f BRACKET  loop_f
+        | r_if loop_f BRACKET r_else loop_f BRACKET loop_f
+        | r_if loop_f BRACKET loop_f
+        | r_break loop_f
+        | r_print loop_f
+        | r_input loop_f
+        | assigment loop_f
+        | function_call SEMI_COLON
+        | r_return local_f
+        |
+        ;
+
+
+function: DEF TYPE ID OPEN params CLOSE COLON local_f BRACKET
         | DEF VOID ID OPEN params CLOSE COLON local BRACKET
         ;
 
+r_return : RETURN expr SEMI_COLON;
+
 function_call: ID OPEN expr CLOSE
-        ;
+            ;
 
 params  : TYPE ID params2
         |
@@ -52,30 +78,22 @@ params2 : COMMA TYPE ID params2
         ;
 
 // For each
-r_for   : FOR ID IN RANGE OPEN expr COMMA expr CLOSE COLON loop BRACKET
-        | FOR ID IN RANGE OPEN expr CLOSE COLON loop BRACKET
+r_for   : FOR ID IN RANGE OPEN expr COMMA expr CLOSE COLON
+        | FOR ID IN RANGE OPEN expr CLOSE COLON
 ;
 
 //while
-r_while: WHILE expr COLON loop BRACKET
+r_while: WHILE expr COLON
 ;
 
 r_break : BREAK SEMI_COLON;
 
 // if
-r_if: IF expr COLON local BRACKET r_else
+r_if: IF expr COLON
 ;
 
-r_loop_if   : IF expr COLON loop BRACKET r_loop_else
-            ;
-
-r_else: ELSE COLON local BRACKET
-        |
+r_else  : ELSE COLON
         ;
-
-r_loop_else : ELSE COLON loop BRACKET
-            |
-            ;
 
 // print
 r_print : PRINT expr r_print2 SEMI_COLON
