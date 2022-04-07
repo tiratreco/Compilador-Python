@@ -17,6 +17,9 @@ local   : r_for local
         | r_print local
         | r_input local
         | assigment local
+        | function_call SEMI_COLON
+        | RETURN expr SEMI_COLON
+        | RETURN SEMI_COLON
         |
 ;
 
@@ -27,14 +30,17 @@ loop: r_for loop
     | r_input loop
     | assigment loop
     | r_break loop
+    | function_call SEMI_COLON
+    | RETURN expr SEMI_COLON
+    | RETURN SEMI_COLON
     |
     ;
 
-function: DEF TYPE ID OPEN params CLOSE COLON local RETURN expr SEMI_COLON BRACKET
+function: DEF TYPE ID OPEN params CLOSE COLON local BRACKET
         | DEF VOID ID OPEN params CLOSE COLON local BRACKET
         ;
 
-function_call: ID OPEN factor CLOSE SEMI_COLON
+function_call: ID OPEN expr CLOSE
         ;
 
 params  : TYPE ID params2
