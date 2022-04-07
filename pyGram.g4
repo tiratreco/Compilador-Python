@@ -1,6 +1,5 @@
 grammar pyGram;
 
-// Início do trecho da Atividade 3 sem alterações
 prog    : global main;
 
 global  : declaration global
@@ -164,6 +163,8 @@ factor  : OPEN expr CLOSE
 
 r_input: INPUT OPEN CLOSE;
 
+teste: STR_VALUE;
+
 // Símbolo
 //Operadores de atribuição
 ASSIGNMENT: '=';
@@ -226,7 +227,7 @@ ID: [a-zA-Z][a-zA-Z0-9]*;
 //Valores
 NUM: [0-9]+;
 FLOAT_VALUE: [0-9]+[.][0-9]+;
-STR_VALUE: ["].*["];
+STR_VALUE: ["]~["]*["];
 BOOL_VALUE: 'True' | 'False';
 
 WS: [ \t\r\n] -> skip;
