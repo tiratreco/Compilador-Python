@@ -1,118 +1,58 @@
 grammar pyGram;
 
-prog    : global main;
-
-global  : declaration global
-        | function global
-        |
-        ;
+global: declaration* function* main;
 
 main: MAIN OPEN CLOSE COLON local BRACKET
 ;
 
-local   : r_for loop BRACKET local
-        | r_while loop BRACKET  local
-        | r_if local BRACKET r_else local BRACKET local
-        | r_if local BRACKET local
+local   : r_for local
+        | r_break local
+        | r_while local
+        | r_if r_else? local
         | r_print local
-        | r_input local
         | assigment local
-        | function_call SEMI_COLON
+        | function_call SEMI_COLON local
+        | r_return local
         |
 ;
 
-loop: r_for loop BRACKET loop
-    | r_while loop BRACKET  loop
-    | r_if loop BRACKET r_else loop BRACKET loop
-    | r_if loop BRACKET loop
-    | r_break loop
-    | r_print loop
-    | r_input loop
-    | assigment loop
-    | function_call SEMI_COLON
-    |
-    ;
+function: DEF type ID OPEN (type ID (COMMA type ID)*)? CLOSE COLON local BRACKET
+        | DEF VOID ID OPEN (type ID (COMMA type ID)*)? CLOSE COLON local BRACKET
+        ;
 
-local_f : r_for loop BRACKET local_f
-        | r_while loop BRACKET  local_f
-        | r_if local_f BRACKET r_else local_f BRACKET local_f
-        | r_if local_f BRACKET local_f
-        | r_print local_f
-        | r_input local_f
-        | assigment local_f
-        | function_call SEMI_COLON
-        | r_return local_f
-        |
+r_return : RETURN expr? SEMI_COLON
 ;
 
-loop_f  : r_for loop_f BRACKET loop_f
-        | r_while loop_f BRACKET  loop_f
-        | r_if loop_f BRACKET r_else loop_f BRACKET loop_f
-        | r_if loop_f BRACKET loop_f
-        | r_break loop_f
-        | r_print loop_f
-        | r_input loop_f
-        | assigment loop_f
-        | function_call SEMI_COLON
-        | r_return local_f
-        |
-        ;
-
-
-function: DEF TYPE ID OPEN params CLOSE COLON local_f BRACKET
-        | DEF VOID ID OPEN params CLOSE COLON local BRACKET
-        ;
-
-r_return : RETURN expr SEMI_COLON;
-
-function_call: ID OPEN expr CLOSE
-            ;
-
-params  : TYPE ID params2
-        |
-        ;
-
-params2 : COMMA TYPE ID params2
-        |
-        ;
+function_call: ID OPEN (expr (COMMA expr)*)? CLOSE
+;
 
 // For each
-r_for   : FOR ID IN RANGE OPEN expr COMMA expr CLOSE COLON
-        | FOR ID IN RANGE OPEN expr CLOSE COLON
+r_for: FOR ID IN RANGE OPEN (expr COMMA)? expr CLOSE COLON local BRACKET
 ;
 
 //while
-r_while: WHILE expr COLON
+r_while: WHILE expr COLON local BRACKET
 ;
 
-r_break : BREAK SEMI_COLON;
+r_break : BREAK SEMI_COLON
+;
 
 // if
-r_if: IF expr COLON
+r_if: IF expr COLON local BRACKET
 ;
 
-r_else  : ELSE COLON
-        ;
+r_else: ELSE COLON local BRACKET
+;
 
 // print
-r_print : PRINT expr r_print2 SEMI_COLON
-        ;
+r_print: PRINT (expr (COMMA expr)*)? SEMI_COLON
+;
 
-r_print2: COMMA expr
-        |
-        ;
+declaration: type ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON
+;
 
-declaration : TYPE ID ASSIGNMENT expr declaration2 SEMI_COLON
-            | TYPE ID declaration2 SEMI_COLON
-            ;
-
-declaration2 : COMMA ID ASSIGNMENT expr declaration2
-                | COMMA ID declaration2
-                |
-                ;
-
-assigment   : ID ASSIGNMENT expr SEMI_COLON
-            ;
+assigment: ID ASSIGNMENT expr SEMI_COLON
+;
 
 expr: expr OR term
     | term
@@ -153,7 +93,7 @@ term7   : NOT factor
 
 factor  : OPEN expr CLOSE
         | ID
-        | NUM
+        | INT_VALUE
         | FLOAT_VALUE
         | STR_VALUE
         | BOOL_VALUE
@@ -161,9 +101,10 @@ factor  : OPEN expr CLOSE
         | function_call
         ;
 
-r_input: INPUT OPEN CLOSE;
+r_input: INPUT OPEN CLOSE
+;
 
-teste: STR_VALUE;
+type: INT | FLOAT | STRING | BOOLEAN;
 
 // Símbolo
 //Operadores de atribuição
@@ -209,12 +150,11 @@ MAIN: 'main';
 RETURN: 'return';
 
 //tipos
-TYPE: 'int'| 'boolean'|'string'|'float';
 VOID: 'void';
-//INT: 'int';
-//FLOAT: 'float';
-//STRING: 'string';
-//BOOLEAN: 'boolean';
+INT: 'int';
+FLOAT: 'float';
+STRING: 'string';
+BOOLEAN: 'boolean';
 
 //Funções
 PRINT: 'print';
@@ -225,7 +165,7 @@ RANGE: 'range';
 ID: [a-zA-Z][a-zA-Z0-9]*;
 
 //Valores
-NUM: [0-9]+;
+INT_VALEU: [0-9]+;
 FLOAT_VALUE: [0-9]+[.][0-9]+;
 STR_VALUE: ["]~["]*["];
 BOOL_VALUE: 'True' | 'False';
