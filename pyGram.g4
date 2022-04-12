@@ -74,20 +74,12 @@ term3   : term3 EQ term4
         | term4
         ;
 
-term4   : term4 p_m term5
+term4   : term4 PLUS_MINUS term5
         | term5
         ;
 
-p_m     : PLUS
-        | MINUS
-        ;
-
-term5   : term5 t_d term6
+term5   : term5 TIMES_DIVIDES term6
         | term6
-        ;
-
-t_d     : TIMES
-        | DIVIDES
         ;
 
 term6   : MINUS term6
@@ -126,6 +118,9 @@ GE: '>=';
 LE: '<=';
 
 //Operadores aritméticos
+PLUS_MINUS : '+' | '-';
+TIMES_DIVIDES : '*' | '/';
+
 PLUS: '+';
 MINUS: '-';
 TIMES: '*';
