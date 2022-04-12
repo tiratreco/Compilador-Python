@@ -1,4 +1,4 @@
-# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -17,21 +17,48 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#prog2.
-    def enterProg2(self, ctx:pyGramParser.Prog2Context):
+    # Enter a parse tree produced by pyGramParser#main.
+    def enterMain(self, ctx:pyGramParser.MainContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#prog2.
-    def exitProg2(self, ctx:pyGramParser.Prog2Context):
+    # Exit a parse tree produced by pyGramParser#main.
+    def exitMain(self, ctx:pyGramParser.MainContext):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#prog2_ind.
-    def enterProg2_ind(self, ctx:pyGramParser.Prog2_indContext):
+    # Enter a parse tree produced by pyGramParser#local.
+    def enterLocal(self, ctx:pyGramParser.LocalContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#prog2_ind.
-    def exitProg2_ind(self, ctx:pyGramParser.Prog2_indContext):
+    # Exit a parse tree produced by pyGramParser#local.
+    def exitLocal(self, ctx:pyGramParser.LocalContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#function.
+    def enterFunction(self, ctx:pyGramParser.FunctionContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#function.
+    def exitFunction(self, ctx:pyGramParser.FunctionContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#r_return.
+    def enterR_return(self, ctx:pyGramParser.R_returnContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#r_return.
+    def exitR_return(self, ctx:pyGramParser.R_returnContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#function_call.
+    def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#function_call.
+    def exitFunction_call(self, ctx:pyGramParser.Function_callContext):
         pass
 
 
@@ -44,6 +71,24 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by pyGramParser#r_while.
+    def enterR_while(self, ctx:pyGramParser.R_whileContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#r_while.
+    def exitR_while(self, ctx:pyGramParser.R_whileContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#r_break.
+    def enterR_break(self, ctx:pyGramParser.R_breakContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#r_break.
+    def exitR_break(self, ctx:pyGramParser.R_breakContext):
+        pass
+
+
     # Enter a parse tree produced by pyGramParser#r_if.
     def enterR_if(self, ctx:pyGramParser.R_ifContext):
         pass
@@ -53,12 +98,12 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#r_while.
-    def enterR_while(self, ctx:pyGramParser.R_whileContext):
+    # Enter a parse tree produced by pyGramParser#r_else.
+    def enterR_else(self, ctx:pyGramParser.R_elseContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#r_while.
-    def exitR_while(self, ctx:pyGramParser.R_whileContext):
+    # Exit a parse tree produced by pyGramParser#r_else.
+    def exitR_else(self, ctx:pyGramParser.R_elseContext):
         pass
 
 
@@ -71,57 +116,21 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by pyGramParser#declaration.
+    def enterDeclaration(self, ctx:pyGramParser.DeclarationContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#declaration.
+    def exitDeclaration(self, ctx:pyGramParser.DeclarationContext):
+        pass
+
+
     # Enter a parse tree produced by pyGramParser#assigment.
     def enterAssigment(self, ctx:pyGramParser.AssigmentContext):
         pass
 
     # Exit a parse tree produced by pyGramParser#assigment.
     def exitAssigment(self, ctx:pyGramParser.AssigmentContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#assigment2.
-    def enterAssigment2(self, ctx:pyGramParser.Assigment2Context):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#assigment2.
-    def exitAssigment2(self, ctx:pyGramParser.Assigment2Context):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#b_expr.
-    def enterB_expr(self, ctx:pyGramParser.B_exprContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#b_expr.
-    def exitB_expr(self, ctx:pyGramParser.B_exprContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#b_term.
-    def enterB_term(self, ctx:pyGramParser.B_termContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#b_term.
-    def exitB_term(self, ctx:pyGramParser.B_termContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#b_factor.
-    def enterB_factor(self, ctx:pyGramParser.B_factorContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#b_factor.
-    def exitB_factor(self, ctx:pyGramParser.B_factorContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#c_expr.
-    def enterC_expr(self, ctx:pyGramParser.C_exprContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#c_expr.
-    def exitC_expr(self, ctx:pyGramParser.C_exprContext):
         pass
 
 
@@ -143,12 +152,75 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by pyGramParser#term2.
+    def enterTerm2(self, ctx:pyGramParser.Term2Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term2.
+    def exitTerm2(self, ctx:pyGramParser.Term2Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#term3.
+    def enterTerm3(self, ctx:pyGramParser.Term3Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term3.
+    def exitTerm3(self, ctx:pyGramParser.Term3Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#term4.
+    def enterTerm4(self, ctx:pyGramParser.Term4Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term4.
+    def exitTerm4(self, ctx:pyGramParser.Term4Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#term5.
+    def enterTerm5(self, ctx:pyGramParser.Term5Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term5.
+    def exitTerm5(self, ctx:pyGramParser.Term5Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#term6.
+    def enterTerm6(self, ctx:pyGramParser.Term6Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term6.
+    def exitTerm6(self, ctx:pyGramParser.Term6Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#term7.
+    def enterTerm7(self, ctx:pyGramParser.Term7Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#term7.
+    def exitTerm7(self, ctx:pyGramParser.Term7Context):
+        pass
+
+
     # Enter a parse tree produced by pyGramParser#factor.
     def enterFactor(self, ctx:pyGramParser.FactorContext):
         pass
 
     # Exit a parse tree produced by pyGramParser#factor.
     def exitFactor(self, ctx:pyGramParser.FactorContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#r_input.
+    def enterR_input(self, ctx:pyGramParser.R_inputContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#r_input.
+    def exitR_input(self, ctx:pyGramParser.R_inputContext):
         pass
 
 

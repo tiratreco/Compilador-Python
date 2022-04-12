@@ -1,6 +1,6 @@
 grammar pyGram;
 
-global: declaration* function* main;
+prog: declaration* function* main;
 
 main: MAIN OPEN CLOSE COLON local BRACKET
 ;
@@ -16,8 +16,8 @@ local   : r_for local
         |
 ;
 
-function: DEF type ID OPEN (type ID (COMMA type ID)*)? CLOSE COLON local BRACKET
-        | DEF VOID ID OPEN (type ID (COMMA type ID)*)? CLOSE COLON local BRACKET
+function: DEF TYPE ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET
+        | DEF VOID ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET
         ;
 
 r_return : RETURN expr? SEMI_COLON
@@ -48,7 +48,7 @@ r_else: ELSE COLON local BRACKET
 r_print: PRINT (expr (COMMA expr)*)? SEMI_COLON
 ;
 
-declaration: type ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON
+declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON
 ;
 
 assigment: ID ASSIGNMENT expr SEMI_COLON
@@ -100,14 +100,12 @@ factor  : OPEN expr CLOSE
 r_input: INPUT OPEN CLOSE
 ;
 
-type: INT | FLOAT | STRING | BOOLEAN;
-
 // Símbolo
 //Operadores de atribuição
 ASSIGNMENT: '=';
 
 //Operadores relacionais
-COMP : | '>'
+COMP : '>'
     | '<'
     | '>='
     | '<='
@@ -119,6 +117,7 @@ NE: '!=';
 //Operadores aritméticos
 PLUS_MINUS : '+' | '-';
 TIMES_DIVIDES : '*' | '/';
+MINUS: '-';
 
 //Pontuação
 COMMA: ',';
@@ -147,10 +146,10 @@ RETURN: 'return';
 
 //tipos
 VOID: 'void';
-INT: 'int';
-FLOAT: 'float';
-STRING: 'string';
-BOOLEAN: 'boolean';
+TYPE: 'int'
+    | 'float'
+    | 'string'
+    | 'boolean';
 
 //Funções
 PRINT: 'print';
