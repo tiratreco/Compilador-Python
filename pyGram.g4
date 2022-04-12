@@ -62,10 +62,7 @@ term: term AND term2
     | term2
     ;
 
-term2   : term2 GT term3
-        | term2 LT term3
-        | term2 GE term3
-        | term2 LE term3
+term2   : term2 COMP term3
         | term3
         ;
 
@@ -110,21 +107,18 @@ type: INT | FLOAT | STRING | BOOLEAN;
 ASSIGNMENT: '=';
 
 //Operadores relacionais
+COMP : | '>'
+    | '<'
+    | '>='
+    | '<='
+    ;
+
 EQ: '==';
 NE: '!=';
-GT: '>';
-LT: '<';
-GE: '>=';
-LE: '<=';
 
 //Operadores aritméticos
 PLUS_MINUS : '+' | '-';
 TIMES_DIVIDES : '*' | '/';
-
-PLUS: '+';
-MINUS: '-';
-TIMES: '*';
-DIVIDES: '/';
 
 //Pontuação
 COMMA: ',';
@@ -167,7 +161,7 @@ RANGE: 'range';
 ID: [a-zA-Z][a-zA-Z0-9]*;
 
 //Valores
-INT_VALEU: [0-9]+;
+INT_VALUE: [0-9]+;
 FLOAT_VALUE: [0-9]+[.][0-9]+;
 STR_VALUE: ["]~["]*["];
 BOOL_VALUE: 'True' | 'False';
