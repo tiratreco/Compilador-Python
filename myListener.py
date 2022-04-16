@@ -3,6 +3,7 @@ if __name__ is not None and "." in __name__:
 else:
     from gen.pyGramParser import pyGramParser
 from gen.pyGramListener import pyGramListener
+from SematicErrors import *
 
 class myListener(pyGramListener):
     symbol_table = {}
@@ -79,45 +80,51 @@ class myListener(pyGramListener):
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if (ctx.children[0].type != 'boolean' or ctx.children[2].type != 'boolean'):
-            ctx.type = 'TypeError'
+            raise ExprTypeError(ctx.children[0].type, ctx.children[2].type, ctx.children[1].symbol.text)
             return
         ctx.type = 'boolean'
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if (ctx.children[0].type != 'boolean' or ctx.children[2].type != 'boolean'):
-            ctx.type = 'TypeError'
+            raise ExprTypeError(ctx.children[0].type, ctx.children[2].type, ctx.children[1].symbol.text)
             return
         ctx.type = 'boolean'
 
     def exitComp_logic(self, ctx: pyGramParser.Comp_logicContext):
-        if (ctx.children[0].type == 'TypeError' or ctx.children[2].type == 'TypeError'):
-            ctx.type = 'TypeError'
-            return
         ctx.type = 'boolean'
 
     def exitEq_logic(self, ctx: pyGramParser.Eq_logicContext):
-        if (ctx.children[0].type == 'TypeError' or ctx.children[2].type == 'TypeError'):
-            ctx.type = 'TypeError'
-            return
         ctx.type = 'boolean'
 
     def exitSum_minus(self, ctx: pyGramParser.Sum_minusContext):
-        if self.__isNumeric(ctx.children[0]) and self.__isNumeric(ctx.children[2]):
-            ctx.type = 'boolean'
+        if self.__isNumeric(ctx.children[0].type) and self.__isNumeric(ctx.children[2].type):
+            if ctx.children[0].type == 'float' or ctx.children[2].type == 'float':
+                ctx.type = 'float'
+            else:
+                ctx.type = 'int'
             return
-        ctx.type = 'TypeError'
+        raise ExprTypeError(ctx.children[0].type, ctx.children[2].type, ctx.children[1].symbol.text)
 
     def exitTime_div(self, ctx:pyGramParser.Time_divContext):
-        if self.__isNumeric(ctx.children[0]) and self.__isNumeric(ctx.children[2]):
-            ctx.type = 'boolean'
+        if self.__isNumeric(ctx.children[0].type) and self.__isNumeric(ctx.children[2].type):
+            if ctx.children[0].type == 'float' or ctx.children[2].type == 'float':
+                ctx.type = 'float'
+            else:
+                ctx.type = 'int'
             return
-        ctx.type = 'TypeError'
+        raise ExprTypeError(ctx.children[0].type, ctx.children[2].type, ctx.children[1].symbol.text)
 
     def exitMinus_not(self, ctx:pyGramParser.Minus_notContext):
-        if self.__isNumeric(ctx.children[0]) and self.__isNumeric(ctx.children[2]):
-            ctx.type = 'boolean'
-            return
-        ctx.type = 'TypeError'
+        if ctx.children[0].symbol.text == '-': #minus
+            if (self.__isNumeric(ctx.children[1].type)):
+                ctx.type = ctx.children[1].type
+                return
+            raise ExprTypeError(ctx.children[1].type, ctx.children[0].symbol.text)
+        elif ctx.children[0].symbol.text == 'not': #not
+            if (ctx.children[1].type == 'boolean'):
+                ctx.type = 'boolean'
+                return
+            raise ExprTypeError(ctx.children[1].type, ctx.children[0].symbol.text)
 
     def exitE_term(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term().type

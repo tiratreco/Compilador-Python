@@ -1,6 +1,10 @@
 class ExprTypeError(Exception):
     def __int__(self, type1, type2, operation):
-        message = 'Operação {} não suportada para os tipos: {} {}'.format(operation, type1, type1)
+        message = 'Operação {} não suportada para os tipos: {} {}'.format(operation, type1, type2)
+        super().__init__(self.message)
+
+    def __int__(self, type1, operation):
+        message = 'Operação {} não suportada para o tipo: {}'.format(operation, type1)
         super().__init__(self.message)
 
 class UndeclaredVariable(Exception):
