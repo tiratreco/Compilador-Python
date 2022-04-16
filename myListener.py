@@ -42,7 +42,6 @@ class myListener(pyGramListener):
     def exitFunction_call(self, ctx:pyGramParser.Function_callContext):
         function_id = ctx.ID().getText()
 
-
         if len(self.functions_args[function_id]) != len(ctx.expr()):
             ctx.type = 'TypeError'
             return

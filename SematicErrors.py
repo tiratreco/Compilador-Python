@@ -13,12 +13,12 @@ class AssignmentTypeError(Exception):
         message = 'Tipo incompatível com a variável {}: {}'.format(type, id)
         super().__init__(self.message)
 
-class BreakException(Exception)
+class BreakException(Exception):
     def __int__(self, type, id):
         message = 'Break fora do escopo de um laço de repetição'
         super().__init__(self.message)
 
-class ReturnException(Exception)
+class ReturnException(Exception):
     def __int__(self, type, id):
         message = 'Return fora do escopo de uma função'
         super().__init__(self.message)
