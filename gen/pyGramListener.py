@@ -35,12 +35,21 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#function.
-    def enterFunction(self, ctx:pyGramParser.FunctionContext):
+    # Enter a parse tree produced by pyGramParser#l_type.
+    def enterL_type(self, ctx:pyGramParser.L_typeContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#function.
-    def exitFunction(self, ctx:pyGramParser.FunctionContext):
+    # Exit a parse tree produced by pyGramParser#l_type.
+    def exitL_type(self, ctx:pyGramParser.L_typeContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_void.
+    def enterL_void(self, ctx:pyGramParser.L_voidContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_void.
+    def exitL_void(self, ctx:pyGramParser.L_voidContext):
         pass
 
 
@@ -197,21 +206,75 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#term7.
-    def enterTerm7(self, ctx:pyGramParser.Term7Context):
+    # Enter a parse tree produced by pyGramParser#l_expr.
+    def enterL_expr(self, ctx:pyGramParser.L_exprContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#term7.
-    def exitTerm7(self, ctx:pyGramParser.Term7Context):
+    # Exit a parse tree produced by pyGramParser#l_expr.
+    def exitL_expr(self, ctx:pyGramParser.L_exprContext):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#factor.
-    def enterFactor(self, ctx:pyGramParser.FactorContext):
+    # Enter a parse tree produced by pyGramParser#l_id.
+    def enterL_id(self, ctx:pyGramParser.L_idContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#factor.
-    def exitFactor(self, ctx:pyGramParser.FactorContext):
+    # Exit a parse tree produced by pyGramParser#l_id.
+    def exitL_id(self, ctx:pyGramParser.L_idContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_int_value.
+    def enterL_int_value(self, ctx:pyGramParser.L_int_valueContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_int_value.
+    def exitL_int_value(self, ctx:pyGramParser.L_int_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#fl_loat_value.
+    def enterFl_loat_value(self, ctx:pyGramParser.Fl_loat_valueContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#fl_loat_value.
+    def exitFl_loat_value(self, ctx:pyGramParser.Fl_loat_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_str_value.
+    def enterL_str_value(self, ctx:pyGramParser.L_str_valueContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_str_value.
+    def exitL_str_value(self, ctx:pyGramParser.L_str_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_bool_value.
+    def enterL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_bool_value.
+    def exitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_input.
+    def enterL_input(self, ctx:pyGramParser.L_inputContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_input.
+    def exitL_input(self, ctx:pyGramParser.L_inputContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#l_function_call.
+    def enterL_function_call(self, ctx:pyGramParser.L_function_callContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_function_call.
+    def exitL_function_call(self, ctx:pyGramParser.L_function_callContext):
         pass
 
 

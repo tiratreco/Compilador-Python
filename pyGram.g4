@@ -16,14 +16,14 @@ local   : r_for local
         |
 ;
 
-function: DEF TYPE ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET
-        | DEF VOID ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET
+function: DEF TYPE ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET #l_type
+        | DEF VOID ID OPEN (TYPE ID (COMMA TYPE ID)*)? CLOSE COLON local BRACKET #l_void
         ;
 
 r_return : RETURN expr? SEMI_COLON
 ;
 
-function_call: ID OPEN (expr (COMMA expr)*)? CLOSE
+function_call returns [type]: ID OPEN (expr (COMMA expr)*)? CLOSE
 ;
 
 // For each
@@ -53,7 +53,7 @@ declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLO
 assigment: ID ASSIGNMENT expr SEMI_COLON
 ;
 
-expr
+expr returns [type]
     : expr OR term
     | term
     ;
@@ -78,22 +78,19 @@ term5   : term5 (TIMES | DIVIDES) term6
         | term6
         ;
 
-term6   : MINUS term6
-        | term7
-        ;
-
-term7   : NOT factor
+term6   : (MINUS | NOT) term6
         | factor
         ;
 
-factor  : OPEN expr CLOSE
-        | ID
-        | INT_VALUE
-        | FLOAT_VALUE
-        | STR_VALUE
-        | BOOL_VALUE
-        | r_input
-        | function_call
+factor  returns [type]
+        : OPEN expr CLOSE #l_expr// expr.type
+        | ID #l_id//symbol_table
+        | INT_VALUE #l_int_value //integer
+        | FLOAT_VALUE #fl_loat_value//float
+        | STR_VALUE #l_str_value//string
+        | BOOL_VALUE #l_bool_value// boolean
+        | r_input #l_input//string
+        | function_call #l_function_call//function_call.type
         ;
 
 r_input: INPUT OPEN CLOSE
