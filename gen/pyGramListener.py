@@ -233,12 +233,12 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#fl_loat_value.
-    def enterFl_loat_value(self, ctx:pyGramParser.Fl_loat_valueContext):
+    # Enter a parse tree produced by pyGramParser#l_float_value.
+    def enterL_float_value(self, ctx:pyGramParser.L_float_valueContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#fl_loat_value.
-    def exitFl_loat_value(self, ctx:pyGramParser.Fl_loat_valueContext):
+    # Exit a parse tree produced by pyGramParser#l_float_value.
+    def exitL_float_value(self, ctx:pyGramParser.L_float_valueContext):
         pass
 
 

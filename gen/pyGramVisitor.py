@@ -134,8 +134,8 @@ class pyGramVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#fl_loat_value.
-    def visitFl_loat_value(self, ctx:pyGramParser.Fl_loat_valueContext):
+    # Visit a parse tree produced by pyGramParser#l_float_value.
+    def visitL_float_value(self, ctx:pyGramParser.L_float_valueContext):
         return self.visitChildren(ctx)
 
 

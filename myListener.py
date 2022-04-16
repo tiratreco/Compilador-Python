@@ -23,7 +23,7 @@ class myListener(pyGramListener):
         ctx.type = self.symbol_table[ctx.ID().getText()]
 
     def exitL_expr(self, ctx:pyGramParser.L_exprContext):
-        ctx.type = ctx.expr().symbol.type
+        ctx.type = ctx.expr().type
 
     def exitL_id(self, ctx:pyGramParser.L_idContext):
         ctx.type = self.symbol_table[ctx.ID().getText()]
@@ -31,17 +31,17 @@ class myListener(pyGramListener):
     def exitL_int_value(self, ctx:pyGramParser.L_int_valueContext):
         ctx.type = 'integer'
 
-    def exitL_float_value(self, ctx:pyGramParser.L_int_valueContext):
+    def exitL_float_value(self, ctx:pyGramParser.L_float_valueContext):
         ctx.type = 'float'
 
-    def exitL_str_value(self, ctx:pyGramParser.L_int_valueContext):
+    def exitL_str_value(self, ctx:pyGramParser.L_str_valueContext):
         ctx.type = 'string'
 
-    def exitL_bool_value(self, ctx:pyGramParser.L_int_valueContext):
+    def exitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
         ctx.type = 'boolean'
 
-    def exitL_input(self, ctx:pyGramParser.L_int_valueContext):
+    def exitL_input(self, ctx:pyGramParser.L_inputContext):
         ctx.type = 'string'
 
-    def exitL_function_call(self, ctx:pyGramParser.L_int_valueContext):
-        ctx.type = ctx.function_call().symbol.type
+    def exitL_function_call(self, ctx:pyGramParser.L_function_callContext):
+        ctx.type = ctx.function_call().type

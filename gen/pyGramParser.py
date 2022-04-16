@@ -592,7 +592,6 @@ class pyGramParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
-            self.type = None
 
 
         def getRuleIndex(self):
@@ -601,7 +600,6 @@ class pyGramParser ( Parser ):
      
         def copyFrom(self, ctx:ParserRuleContext):
             super().copyFrom(ctx)
-            self.type = ctx.type
 
 
 
@@ -888,6 +886,7 @@ class pyGramParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
+            self.type = None
 
         def ID(self):
             return self.getToken(pyGramParser.ID, 0)
@@ -2290,30 +2289,6 @@ class pyGramParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
-    class Fl_loat_valueContext(FactorContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.FactorContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def FLOAT_VALUE(self):
-            return self.getToken(pyGramParser.FLOAT_VALUE, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterFl_loat_value" ):
-                listener.enterFl_loat_value(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitFl_loat_value" ):
-                listener.exitFl_loat_value(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFl_loat_value" ):
-                return visitor.visitFl_loat_value(self)
-            else:
-                return visitor.visitChildren(self)
-
-
     class L_idContext(FactorContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.FactorContext
@@ -2334,6 +2309,30 @@ class pyGramParser ( Parser ):
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitL_id" ):
                 return visitor.visitL_id(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class L_float_valueContext(FactorContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.FactorContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def FLOAT_VALUE(self):
+            return self.getToken(pyGramParser.FLOAT_VALUE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterL_float_value" ):
+                listener.enterL_float_value(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitL_float_value" ):
+                listener.exitL_float_value(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitL_float_value" ):
+                return visitor.visitL_float_value(self)
             else:
                 return visitor.visitChildren(self)
 
@@ -2452,7 +2451,7 @@ class pyGramParser ( Parser ):
                 pass
 
             elif la_ == 4:
-                localctx = pyGramParser.Fl_loat_valueContext(self, localctx)
+                localctx = pyGramParser.L_float_valueContext(self, localctx)
                 self.enterOuterAlt(localctx, 4)
                 self.state = 312
                 self.match(pyGramParser.FLOAT_VALUE)
