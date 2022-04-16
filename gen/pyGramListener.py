@@ -1,4 +1,4 @@
-# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -143,66 +143,129 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#expr.
-    def enterExpr(self, ctx:pyGramParser.ExprContext):
+    # Enter a parse tree produced by pyGramParser#or_logic.
+    def enterOr_logic(self, ctx:pyGramParser.Or_logicContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#expr.
-    def exitExpr(self, ctx:pyGramParser.ExprContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#term.
-    def enterTerm(self, ctx:pyGramParser.TermContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#term.
-    def exitTerm(self, ctx:pyGramParser.TermContext):
+    # Exit a parse tree produced by pyGramParser#or_logic.
+    def exitOr_logic(self, ctx:pyGramParser.Or_logicContext):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#term2.
-    def enterTerm2(self, ctx:pyGramParser.Term2Context):
+    # Enter a parse tree produced by pyGramParser#e_term.
+    def enterE_term(self, ctx:pyGramParser.E_termContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#term2.
-    def exitTerm2(self, ctx:pyGramParser.Term2Context):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#term3.
-    def enterTerm3(self, ctx:pyGramParser.Term3Context):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#term3.
-    def exitTerm3(self, ctx:pyGramParser.Term3Context):
+    # Exit a parse tree produced by pyGramParser#e_term.
+    def exitE_term(self, ctx:pyGramParser.E_termContext):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#term4.
-    def enterTerm4(self, ctx:pyGramParser.Term4Context):
+    # Enter a parse tree produced by pyGramParser#and_logic.
+    def enterAnd_logic(self, ctx:pyGramParser.And_logicContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#term4.
-    def exitTerm4(self, ctx:pyGramParser.Term4Context):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#term5.
-    def enterTerm5(self, ctx:pyGramParser.Term5Context):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#term5.
-    def exitTerm5(self, ctx:pyGramParser.Term5Context):
+    # Exit a parse tree produced by pyGramParser#and_logic.
+    def exitAnd_logic(self, ctx:pyGramParser.And_logicContext):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#term6.
-    def enterTerm6(self, ctx:pyGramParser.Term6Context):
+    # Enter a parse tree produced by pyGramParser#e_term2.
+    def enterE_term2(self, ctx:pyGramParser.E_term2Context):
         pass
 
-    # Exit a parse tree produced by pyGramParser#term6.
-    def exitTerm6(self, ctx:pyGramParser.Term6Context):
+    # Exit a parse tree produced by pyGramParser#e_term2.
+    def exitE_term2(self, ctx:pyGramParser.E_term2Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#comp_logic.
+    def enterComp_logic(self, ctx:pyGramParser.Comp_logicContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#comp_logic.
+    def exitComp_logic(self, ctx:pyGramParser.Comp_logicContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#e_term3.
+    def enterE_term3(self, ctx:pyGramParser.E_term3Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#e_term3.
+    def exitE_term3(self, ctx:pyGramParser.E_term3Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#eq_logic.
+    def enterEq_logic(self, ctx:pyGramParser.Eq_logicContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#eq_logic.
+    def exitEq_logic(self, ctx:pyGramParser.Eq_logicContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#e_term4.
+    def enterE_term4(self, ctx:pyGramParser.E_term4Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#e_term4.
+    def exitE_term4(self, ctx:pyGramParser.E_term4Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#sum_minus.
+    def enterSum_minus(self, ctx:pyGramParser.Sum_minusContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#sum_minus.
+    def exitSum_minus(self, ctx:pyGramParser.Sum_minusContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#e_term5.
+    def enterE_term5(self, ctx:pyGramParser.E_term5Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#e_term5.
+    def exitE_term5(self, ctx:pyGramParser.E_term5Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#e_term6.
+    def enterE_term6(self, ctx:pyGramParser.E_term6Context):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#e_term6.
+    def exitE_term6(self, ctx:pyGramParser.E_term6Context):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#time_div.
+    def enterTime_div(self, ctx:pyGramParser.Time_divContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#time_div.
+    def exitTime_div(self, ctx:pyGramParser.Time_divContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#minus_not.
+    def enterMinus_not(self, ctx:pyGramParser.Minus_notContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#minus_not.
+    def exitMinus_not(self, ctx:pyGramParser.Minus_notContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#e_factor.
+    def enterE_factor(self, ctx:pyGramParser.E_factorContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#e_factor.
+    def exitE_factor(self, ctx:pyGramParser.E_factorContext):
         pass
 
 

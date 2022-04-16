@@ -1,4 +1,4 @@
-# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -84,38 +84,73 @@ class pyGramVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#expr.
-    def visitExpr(self, ctx:pyGramParser.ExprContext):
+    # Visit a parse tree produced by pyGramParser#or_logic.
+    def visitOr_logic(self, ctx:pyGramParser.Or_logicContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term.
-    def visitTerm(self, ctx:pyGramParser.TermContext):
+    # Visit a parse tree produced by pyGramParser#e_term.
+    def visitE_term(self, ctx:pyGramParser.E_termContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term2.
-    def visitTerm2(self, ctx:pyGramParser.Term2Context):
+    # Visit a parse tree produced by pyGramParser#and_logic.
+    def visitAnd_logic(self, ctx:pyGramParser.And_logicContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term3.
-    def visitTerm3(self, ctx:pyGramParser.Term3Context):
+    # Visit a parse tree produced by pyGramParser#e_term2.
+    def visitE_term2(self, ctx:pyGramParser.E_term2Context):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term4.
-    def visitTerm4(self, ctx:pyGramParser.Term4Context):
+    # Visit a parse tree produced by pyGramParser#comp_logic.
+    def visitComp_logic(self, ctx:pyGramParser.Comp_logicContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term5.
-    def visitTerm5(self, ctx:pyGramParser.Term5Context):
+    # Visit a parse tree produced by pyGramParser#e_term3.
+    def visitE_term3(self, ctx:pyGramParser.E_term3Context):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#term6.
-    def visitTerm6(self, ctx:pyGramParser.Term6Context):
+    # Visit a parse tree produced by pyGramParser#eq_logic.
+    def visitEq_logic(self, ctx:pyGramParser.Eq_logicContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#e_term4.
+    def visitE_term4(self, ctx:pyGramParser.E_term4Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#sum_minus.
+    def visitSum_minus(self, ctx:pyGramParser.Sum_minusContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#e_term5.
+    def visitE_term5(self, ctx:pyGramParser.E_term5Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#e_term6.
+    def visitE_term6(self, ctx:pyGramParser.E_term6Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#time_div.
+    def visitTime_div(self, ctx:pyGramParser.Time_divContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#minus_not.
+    def visitMinus_not(self, ctx:pyGramParser.Minus_notContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#e_factor.
+    def visitE_factor(self, ctx:pyGramParser.E_factorContext):
         return self.visitChildren(ctx)
 
 

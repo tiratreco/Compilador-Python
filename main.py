@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     #Parser
     parser = pyGramParser(stream)
-    tree = parser.factor()
+    tree = parser.prog()
 
     #Walker using listener
     l = myListener()

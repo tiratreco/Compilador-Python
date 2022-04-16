@@ -54,32 +54,38 @@ assigment: ID ASSIGNMENT expr SEMI_COLON
 ;
 
 expr returns [type]
-    : expr OR term
-    | term
+    : expr OR term #or_logic
+    | term #e_term
     ;
 
-term: term AND term2
-    | term2
+term returns [type]
+    : term AND term2 #and_logic
+    | term2 #e_term2
     ;
 
-term2   : term2 (GT | LT | LE | GE) term3
-        | term3
+term2   returns [type]
+        : term2 (GT | LT | LE | GE) term3 #comp_logic
+        | term3 #e_term3
         ;
 
-term3   : term3 (EQ | NE) term4
-        | term4
+term3   returns [type]
+        : term3 (EQ | NE) term4 #eq_logic
+        | term4 #e_term4
         ;
 
-term4   : term4 (PLUS | MINUS) term5
-        | term5
+term4   returns [type]
+        : term4 (PLUS | MINUS) term5 #sum_minus
+        | term5 #e_term5
         ;
 
-term5   : term5 (TIMES | DIVIDES) term6
-        | term6
+term5   returns [type]
+        : term5 (TIMES | DIVIDES) term6 #time_div
+        | term6 #e_term6
         ;
 
-term6   : (MINUS | NOT) term6
-        | factor
+term6 returns [type]
+        : (MINUS | NOT) term6 #minus_not
+        | factor #e_factor
         ;
 
 factor  returns [type]
