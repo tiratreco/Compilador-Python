@@ -48,13 +48,13 @@ r_else: ELSE COLON local BRACKET
 r_print: PRINT (expr (COMMA expr)*)? SEMI_COLON
 ;
 
-declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON
-;
+declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON;
 
 assigment: ID ASSIGNMENT expr SEMI_COLON
 ;
 
-expr: expr OR term
+expr
+    : expr OR term
     | term
     ;
 
