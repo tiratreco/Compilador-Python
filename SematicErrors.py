@@ -18,11 +18,11 @@ class AssignmentTypeError(Exception):
         super().__init__(self.message)
 
 class BreakException(Exception):
-    def __int__(self, type, id):
+    def __int__(self):
         message = 'Break fora do escopo de um laço de repetição'
         super().__init__(self.message)
 
 class ReturnException(Exception):
-    def __int__(self, type, id):
+    def __int__(self):
         message = 'Return fora do escopo de uma função'
         super().__init__(self.message)

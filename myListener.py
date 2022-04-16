@@ -8,8 +8,33 @@ from SematicErrors import *
 class myListener(pyGramListener):
     symbol_table = {}
     functions_args = {}
+    stack_block = []
+
     def __isNumeric(self, type):
         return (type == 'float') or (type == 'int')
+
+    def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
+        self.stack_block.append('function')
+
+    def enterR_for(self, ctx:pyGramParser.R_forContext):
+        self.stack_block.append('loop')
+
+    def enterR_while(self, ctx:pyGramParser.R_whileContext):
+        self.stack_block.append('loop')
+
+    def enterR_return(self, ctx: pyGramParser.R_returnContext):
+        if not 'function' in self.stack_block:
+            raise ReturnException()
+
+    def enterR_break(self, ctx:pyGramParser.R_breakContext):
+        if self.stack_block[len(self.stack_block)] != 'loop':
+            raise BreakException()
+
+    def exitR_for(self, ctx:pyGramParser.R_forContext):
+        self.stack_block.pop()
+
+    def exitR_while(self, ctx:pyGramParser.R_whileContext):
+        self.stack_block.pop()
 
     def exitDeclaration(self, ctx:pyGramParser.DeclarationContext):
         ctx_type = ctx.TYPE().getText() if ctx.TYPE().getText() != 'int' else 'integer'
@@ -42,6 +67,7 @@ class myListener(pyGramListener):
 
     def exitFunction_call(self, ctx:pyGramParser.Function_callContext):
         function_id = ctx.ID().getText()
+        self.stack_block.pop()
 
         if len(self.functions_args[function_id]) != len(ctx.expr()):
             ctx.type = 'TypeError'
