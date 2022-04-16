@@ -62,20 +62,19 @@ term: term AND term2
     | term2
     ;
 
-term2   : term2 COMP term3
+term2   : term2 (GT | LT | LE | GE) term3
         | term3
         ;
 
-term3   : term3 EQ term4
-        | term3 NE term4
+term3   : term3 (EQ | NE) term4
         | term4
         ;
 
-term4   : term4 PLUS_MINUS term5
+term4   : term4 (PLUS | MINUS) term5
         | term5
         ;
 
-term5   : term5 TIMES_DIVIDES term6
+term5   : term5 (TIMES | DIVIDES) term6
         | term6
         ;
 
@@ -105,19 +104,19 @@ r_input: INPUT OPEN CLOSE
 ASSIGNMENT: '=';
 
 //Operadores relacionais
-COMP : '>'
-    | '<'
-    | '>='
-    | '<='
-    ;
+GT: '>';
+LT: '<';
+GE: '>=';
+LE: '<=';
 
 EQ: '==';
 NE: '!=';
 
 //Operadores aritméticos
-PLUS_MINUS : '+' | '-';
-TIMES_DIVIDES : '*' | '/';
+PLUS: '+';
 MINUS: '-';
+TIMES: '*';
+DIVIDES: '/';
 
 //Pontuação
 COMMA: ',';
