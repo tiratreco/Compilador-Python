@@ -1,6 +1,6 @@
-int x, y;
+def int teste (int a, float b):
+}
 
 main():
-    y = 3;
-    x = 5 > y;
+    teste(3, 2);
 }

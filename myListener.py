@@ -6,11 +6,9 @@ from gen.pyGramListener import pyGramListener
 
 class myListener(pyGramListener):
     symbol_table = {}
-
-
+    functions_args = {}
     def __isNumeric(self, type):
         return (type == 'float') or (type == 'int')
-
 
     def exitDeclaration(self, ctx:pyGramParser.DeclarationContext):
         ctx_type = ctx.TYPE().getText() if ctx.TYPE().getText() != 'int' else 'integer'
@@ -19,13 +17,41 @@ class myListener(pyGramListener):
             self.symbol_table[token.getText()] = ctx_type
 
     def exitL_type(self, ctx:pyGramParser.L_typeContext):
-        ctx_type = ctx.TYPE().getText() if ctx.TYPE().getText() != 'int' else 'integer'
-        self.symbol_table[ctx.ID().getText()] = ctx_type
+        ctx_type = ctx.TYPE(0).getText() if ctx.TYPE(0).getText() != 'int' else 'integer'
+        function_id = ctx.ID(0).getText()
+        self.symbol_table[function_id] = ctx_type
 
-    def exitL_void(self, ctx:pyGramParser.L_typeContext):
-        self.symbol_table[ctx.ID().getText()] = 'NoneType'
+        args = []
+        for token_type in ctx.getTokens(pyGramParser.TYPE)[1:]:
+            arg_type = token_type.getText() if token_type.getText() != 'int' else 'integer'
+            args.append(arg_type)
+
+        self.functions_args[function_id] = args
+
+    def exitL_void(self, ctx:pyGramParser.L_voidContext):
+        function_id = ctx.ID(0).getText()
+        self.symbol_table[function_id] = 'NoneType'
+
+        args = []
+        for token_type in ctx.getTokens(pyGramParser.TYPE):
+            arg_type = token_type.getText() if token_type.getText() != 'int' else 'integer'
+            args.append(arg_type)
+
+        self.functions_args[function_id] = args
 
     def exitFunction_call(self, ctx:pyGramParser.Function_callContext):
+        function_id = ctx.ID().getText()
+
+
+        if len(self.functions_args[function_id]) != len(ctx.expr()):
+            ctx.type = 'TypeError'
+            return
+
+        for expected, recieved in list(zip(self.functions_args[function_id], ctx.expr())):
+            if expected != recieved.type:
+                ctx.type = 'TypeError'
+                return
+
         ctx.type = self.symbol_table[ctx.ID().getText()]
 
     def exitL_expr(self, ctx:pyGramParser.L_exprContext):

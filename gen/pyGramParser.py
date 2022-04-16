@@ -607,20 +607,14 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.FunctionContext
             super().__init__(parser)
+            self.f_type = None # Token
+            self.f_id = None # Token
+            self.arg_type = None # Token
+            self.arg_id = None # Token
             self.copyFrom(ctx)
 
         def DEF(self):
             return self.getToken(pyGramParser.DEF, 0)
-        def TYPE(self, i:int=None):
-            if i is None:
-                return self.getTokens(pyGramParser.TYPE)
-            else:
-                return self.getToken(pyGramParser.TYPE, i)
-        def ID(self, i:int=None):
-            if i is None:
-                return self.getTokens(pyGramParser.ID)
-            else:
-                return self.getToken(pyGramParser.ID, i)
         def OPEN(self):
             return self.getToken(pyGramParser.OPEN, 0)
         def CLOSE(self):
@@ -632,6 +626,16 @@ class pyGramParser ( Parser ):
 
         def BRACKET(self):
             return self.getToken(pyGramParser.BRACKET, 0)
+        def TYPE(self, i:int=None):
+            if i is None:
+                return self.getTokens(pyGramParser.TYPE)
+            else:
+                return self.getToken(pyGramParser.TYPE, i)
+        def ID(self, i:int=None):
+            if i is None:
+                return self.getTokens(pyGramParser.ID)
+            else:
+                return self.getToken(pyGramParser.ID, i)
         def COMMA(self, i:int=None):
             if i is None:
                 return self.getTokens(pyGramParser.COMMA)
@@ -721,9 +725,9 @@ class pyGramParser ( Parser ):
                 self.state = 98
                 self.match(pyGramParser.DEF)
                 self.state = 99
-                self.match(pyGramParser.TYPE)
+                localctx.f_type = self.match(pyGramParser.TYPE)
                 self.state = 100
-                self.match(pyGramParser.ID)
+                localctx.f_id = self.match(pyGramParser.ID)
                 self.state = 101
                 self.match(pyGramParser.OPEN)
                 self.state = 112
@@ -731,9 +735,9 @@ class pyGramParser ( Parser ):
                 _la = self._input.LA(1)
                 if _la==pyGramParser.TYPE:
                     self.state = 102
-                    self.match(pyGramParser.TYPE)
+                    localctx.arg_type = self.match(pyGramParser.TYPE)
                     self.state = 103
-                    self.match(pyGramParser.ID)
+                    localctx.arg_id = self.match(pyGramParser.ID)
                     self.state = 109
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
@@ -741,9 +745,9 @@ class pyGramParser ( Parser ):
                         self.state = 104
                         self.match(pyGramParser.COMMA)
                         self.state = 105
-                        self.match(pyGramParser.TYPE)
+                        localctx.arg_type = self.match(pyGramParser.TYPE)
                         self.state = 106
-                        self.match(pyGramParser.ID)
+                        localctx.arg_id = self.match(pyGramParser.ID)
                         self.state = 111
                         self._errHandler.sync(self)
                         _la = self._input.LA(1)
