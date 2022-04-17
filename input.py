@@ -15,6 +15,6 @@ def void resultado (int valor):
 
 main():
     print "Fatorial de N. Digite o numero?";
-    numero = input();
+    numero = 1 + 1;
     resultado (fatorial (numero));
 }

@@ -1,4 +1,4 @@
-# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -65,13 +65,13 @@ def serializedATN():
         buf.write("\n\6\2_`\5\6\4\2`c\3\2\2\2ac\3\2\2\2bE\3\2\2\2bH\3\2\2")
         buf.write("\2bK\3\2\2\2bN\3\2\2\2bT\3\2\2\2bW\3\2\2\2bZ\3\2\2\2b")
         buf.write("^\3\2\2\2ba\3\2\2\2c\7\3\2\2\2de\7\35\2\2ef\7!\2\2fg\7")
-        buf.write("%\2\2gr\7\21\2\2hi\7!\2\2io\7%\2\2jk\7\16\2\2kl\7!\2\2")
-        buf.write("ln\7%\2\2mj\3\2\2\2nq\3\2\2\2om\3\2\2\2op\3\2\2\2ps\3")
+        buf.write(")\2\2gr\7\21\2\2hi\7!\2\2io\7)\2\2jk\7\16\2\2kl\7!\2\2")
+        buf.write("ln\7)\2\2mj\3\2\2\2nq\3\2\2\2om\3\2\2\2op\3\2\2\2ps\3")
         buf.write("\2\2\2qo\3\2\2\2rh\3\2\2\2rs\3\2\2\2st\3\2\2\2tu\7\22")
         buf.write("\2\2uv\7\17\2\2vw\5\6\4\2wx\7\23\2\2x\u008f\3\2\2\2yz")
-        buf.write("\7\35\2\2z{\7 \2\2{|\7%\2\2|\u0087\7\21\2\2}~\7!\2\2~")
-        buf.write("\u0084\7%\2\2\177\u0080\7\16\2\2\u0080\u0081\7!\2\2\u0081")
-        buf.write("\u0083\7%\2\2\u0082\177\3\2\2\2\u0083\u0086\3\2\2\2\u0084")
+        buf.write("\7\35\2\2z{\7 \2\2{|\7)\2\2|\u0087\7\21\2\2}~\7!\2\2~")
+        buf.write("\u0084\7)\2\2\177\u0080\7\16\2\2\u0080\u0081\7!\2\2\u0081")
+        buf.write("\u0083\7)\2\2\u0082\177\3\2\2\2\u0083\u0086\3\2\2\2\u0084")
         buf.write("\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085\u0088\3\2\2\2")
         buf.write("\u0086\u0084\3\2\2\2\u0087}\3\2\2\2\u0087\u0088\3\2\2")
         buf.write("\2\u0088\u0089\3\2\2\2\u0089\u008a\7\22\2\2\u008a\u008b")
@@ -79,14 +79,14 @@ def serializedATN():
         buf.write("\u008f\3\2\2\2\u008ed\3\2\2\2\u008ey\3\2\2\2\u008f\t\3")
         buf.write("\2\2\2\u0090\u0092\7\37\2\2\u0091\u0093\5\36\20\2\u0092")
         buf.write("\u0091\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2\2\2")
-        buf.write("\u0094\u0095\7\20\2\2\u0095\13\3\2\2\2\u0096\u0097\7%")
+        buf.write("\u0094\u0095\7\20\2\2\u0095\13\3\2\2\2\u0096\u0097\7)")
         buf.write("\2\2\u0097\u00a0\7\21\2\2\u0098\u009d\5\36\20\2\u0099")
         buf.write("\u009a\7\16\2\2\u009a\u009c\5\36\20\2\u009b\u0099\3\2")
         buf.write("\2\2\u009c\u009f\3\2\2\2\u009d\u009b\3\2\2\2\u009d\u009e")
         buf.write("\3\2\2\2\u009e\u00a1\3\2\2\2\u009f\u009d\3\2\2\2\u00a0")
         buf.write("\u0098\3\2\2\2\u00a0\u00a1\3\2\2\2\u00a1\u00a2\3\2\2\2")
         buf.write("\u00a2\u00a3\7\22\2\2\u00a3\r\3\2\2\2\u00a4\u00a5\7\27")
-        buf.write("\2\2\u00a5\u00a6\7%\2\2\u00a6\u00a7\7\34\2\2\u00a7\u00a8")
+        buf.write("\2\2\u00a5\u00a6\7)\2\2\u00a6\u00a7\7\34\2\2\u00a7\u00a8")
         buf.write("\7$\2\2\u00a8\u00ac\7\21\2\2\u00a9\u00aa\5\36\20\2\u00aa")
         buf.write("\u00ab\7\16\2\2\u00ab\u00ad\3\2\2\2\u00ac\u00a9\3\2\2")
         buf.write("\2\u00ac\u00ad\3\2\2\2\u00ad\u00ae\3\2\2\2\u00ae\u00af")
@@ -105,15 +105,15 @@ def serializedATN():
         buf.write("\u00ce\u00cf\3\2\2\2\u00cf\u00d2\3\2\2\2\u00d0\u00ce\3")
         buf.write("\2\2\2\u00d1\u00c9\3\2\2\2\u00d1\u00d2\3\2\2\2\u00d2\u00d3")
         buf.write("\3\2\2\2\u00d3\u00d4\7\20\2\2\u00d4\31\3\2\2\2\u00d5\u00d6")
-        buf.write("\7!\2\2\u00d6\u00d9\7%\2\2\u00d7\u00d8\7\3\2\2\u00d8\u00da")
+        buf.write("\7!\2\2\u00d6\u00d9\7)\2\2\u00d7\u00d8\7\3\2\2\u00d8\u00da")
         buf.write("\5\36\20\2\u00d9\u00d7\3\2\2\2\u00d9\u00da\3\2\2\2\u00da")
-        buf.write("\u00e3\3\2\2\2\u00db\u00dc\7\16\2\2\u00dc\u00df\7%\2\2")
+        buf.write("\u00e3\3\2\2\2\u00db\u00dc\7\16\2\2\u00dc\u00df\7)\2\2")
         buf.write("\u00dd\u00de\7\3\2\2\u00de\u00e0\5\36\20\2\u00df\u00dd")
         buf.write("\3\2\2\2\u00df\u00e0\3\2\2\2\u00e0\u00e2\3\2\2\2\u00e1")
         buf.write("\u00db\3\2\2\2\u00e2\u00e5\3\2\2\2\u00e3\u00e1\3\2\2\2")
         buf.write("\u00e3\u00e4\3\2\2\2\u00e4\u00e6\3\2\2\2\u00e5\u00e3\3")
         buf.write("\2\2\2\u00e6\u00e7\7\20\2\2\u00e7\33\3\2\2\2\u00e8\u00e9")
-        buf.write("\7%\2\2\u00e9\u00ea\7\3\2\2\u00ea\u00eb\5\36\20\2\u00eb")
+        buf.write("\7)\2\2\u00e9\u00ea\7\3\2\2\u00ea\u00eb\5\36\20\2\u00eb")
         buf.write("\u00ec\7\20\2\2\u00ec\35\3\2\2\2\u00ed\u00ee\b\20\1\2")
         buf.write("\u00ee\u00ef\5 \21\2\u00ef\u00f5\3\2\2\2\u00f0\u00f1\f")
         buf.write("\4\2\2\u00f1\u00f2\7\24\2\2\u00f2\u00f4\5 \21\2\u00f3")
@@ -144,9 +144,9 @@ def serializedATN():
         buf.write("\t\6\2\2\u0130\u0133\5*\26\2\u0131\u0133\5,\27\2\u0132")
         buf.write("\u012f\3\2\2\2\u0132\u0131\3\2\2\2\u0133+\3\2\2\2\u0134")
         buf.write("\u0135\7\21\2\2\u0135\u0136\5\36\20\2\u0136\u0137\7\22")
-        buf.write("\2\2\u0137\u0140\3\2\2\2\u0138\u0140\7%\2\2\u0139\u0140")
-        buf.write("\7&\2\2\u013a\u0140\7\'\2\2\u013b\u0140\7(\2\2\u013c\u0140")
-        buf.write("\7)\2\2\u013d\u0140\5.\30\2\u013e\u0140\5\f\7\2\u013f")
+        buf.write("\2\2\u0137\u0140\3\2\2\2\u0138\u0140\7)\2\2\u0139\u0140")
+        buf.write("\7%\2\2\u013a\u0140\7&\2\2\u013b\u0140\7\'\2\2\u013c\u0140")
+        buf.write("\7(\2\2\u013d\u0140\5.\30\2\u013e\u0140\5\f\7\2\u013f")
         buf.write("\u0134\3\2\2\2\u013f\u0138\3\2\2\2\u013f\u0139\3\2\2\2")
         buf.write("\u013f\u013a\3\2\2\2\u013f\u013b\3\2\2\2\u013f\u013c\3")
         buf.write("\2\2\2\u013f\u013d\3\2\2\2\u013f\u013e\3\2\2\2\u0140-")
@@ -179,8 +179,8 @@ class pyGramParser ( Parser ):
                       "COLON", "SEMI_COLON", "OPEN", "CLOSE", "BRACKET", 
                       "OR", "AND", "NOT", "FOR", "BREAK", "IF", "ELSE", 
                       "WHILE", "IN", "DEF", "MAIN", "RETURN", "VOID", "TYPE", 
-                      "PRINT", "INPUT", "RANGE", "ID", "INT_VALUE", "FLOAT_VALUE", 
-                      "STR_VALUE", "BOOL_VALUE", "WS" ]
+                      "PRINT", "INPUT", "RANGE", "INT_VALUE", "FLOAT_VALUE", 
+                      "STR_VALUE", "BOOL_VALUE", "ID", "WS" ]
 
     RULE_prog = 0
     RULE_main = 1
@@ -246,11 +246,11 @@ class pyGramParser ( Parser ):
     PRINT=32
     INPUT=33
     RANGE=34
-    ID=35
-    INT_VALUE=36
-    FLOAT_VALUE=37
-    STR_VALUE=38
-    BOOL_VALUE=39
+    INT_VALUE=35
+    FLOAT_VALUE=36
+    STR_VALUE=37
+    BOOL_VALUE=38
+    ID=39
     WS=40
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
@@ -607,14 +607,20 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.FunctionContext
             super().__init__(parser)
-            self.f_type = None # Token
-            self.f_id = None # Token
-            self.arg_type = None # Token
-            self.arg_id = None # Token
             self.copyFrom(ctx)
 
         def DEF(self):
             return self.getToken(pyGramParser.DEF, 0)
+        def TYPE(self, i:int=None):
+            if i is None:
+                return self.getTokens(pyGramParser.TYPE)
+            else:
+                return self.getToken(pyGramParser.TYPE, i)
+        def ID(self, i:int=None):
+            if i is None:
+                return self.getTokens(pyGramParser.ID)
+            else:
+                return self.getToken(pyGramParser.ID, i)
         def OPEN(self):
             return self.getToken(pyGramParser.OPEN, 0)
         def CLOSE(self):
@@ -626,16 +632,6 @@ class pyGramParser ( Parser ):
 
         def BRACKET(self):
             return self.getToken(pyGramParser.BRACKET, 0)
-        def TYPE(self, i:int=None):
-            if i is None:
-                return self.getTokens(pyGramParser.TYPE)
-            else:
-                return self.getToken(pyGramParser.TYPE, i)
-        def ID(self, i:int=None):
-            if i is None:
-                return self.getTokens(pyGramParser.ID)
-            else:
-                return self.getToken(pyGramParser.ID, i)
         def COMMA(self, i:int=None):
             if i is None:
                 return self.getTokens(pyGramParser.COMMA)
@@ -725,9 +721,9 @@ class pyGramParser ( Parser ):
                 self.state = 98
                 self.match(pyGramParser.DEF)
                 self.state = 99
-                localctx.f_type = self.match(pyGramParser.TYPE)
+                self.match(pyGramParser.TYPE)
                 self.state = 100
-                localctx.f_id = self.match(pyGramParser.ID)
+                self.match(pyGramParser.ID)
                 self.state = 101
                 self.match(pyGramParser.OPEN)
                 self.state = 112
@@ -735,9 +731,9 @@ class pyGramParser ( Parser ):
                 _la = self._input.LA(1)
                 if _la==pyGramParser.TYPE:
                     self.state = 102
-                    localctx.arg_type = self.match(pyGramParser.TYPE)
+                    self.match(pyGramParser.TYPE)
                     self.state = 103
-                    localctx.arg_id = self.match(pyGramParser.ID)
+                    self.match(pyGramParser.ID)
                     self.state = 109
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
@@ -745,9 +741,9 @@ class pyGramParser ( Parser ):
                         self.state = 104
                         self.match(pyGramParser.COMMA)
                         self.state = 105
-                        localctx.arg_type = self.match(pyGramParser.TYPE)
+                        self.match(pyGramParser.TYPE)
                         self.state = 106
-                        localctx.arg_id = self.match(pyGramParser.ID)
+                        self.match(pyGramParser.ID)
                         self.state = 111
                         self._errHandler.sync(self)
                         _la = self._input.LA(1)
@@ -868,7 +864,7 @@ class pyGramParser ( Parser ):
             self.state = 144
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.ID) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE) | (1 << pyGramParser.ID))) != 0):
                 self.state = 143
                 self.expr(0)
 
@@ -948,7 +944,7 @@ class pyGramParser ( Parser ):
             self.state = 158
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.ID) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE) | (1 << pyGramParser.ID))) != 0):
                 self.state = 150
                 self.expr(0)
                 self.state = 155
@@ -1397,7 +1393,7 @@ class pyGramParser ( Parser ):
             self.state = 207
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.ID) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.MINUS) | (1 << pyGramParser.OPEN) | (1 << pyGramParser.NOT) | (1 << pyGramParser.INPUT) | (1 << pyGramParser.INT_VALUE) | (1 << pyGramParser.FLOAT_VALUE) | (1 << pyGramParser.STR_VALUE) | (1 << pyGramParser.BOOL_VALUE) | (1 << pyGramParser.ID))) != 0):
                 self.state = 199
                 self.expr(0)
                 self.state = 204
@@ -1864,6 +1860,7 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.Term2Context
             super().__init__(parser)
+            self.op = None # Token
             self.copyFrom(ctx)
 
         def term2(self):
@@ -1954,9 +1951,10 @@ class pyGramParser ( Parser ):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
                     self.state = 261
+                    localctx.op = self._input.LT(1)
                     _la = self._input.LA(1)
                     if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << pyGramParser.GT) | (1 << pyGramParser.LT) | (1 << pyGramParser.GE) | (1 << pyGramParser.LE))) != 0)):
-                        self._errHandler.recoverInline(self)
+                        localctx.op = self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
@@ -1997,6 +1995,7 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.Term3Context
             super().__init__(parser)
+            self.op = None # Token
             self.copyFrom(ctx)
 
         def term3(self):
@@ -2083,9 +2082,10 @@ class pyGramParser ( Parser ):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
                     self.state = 272
+                    localctx.op = self._input.LT(1)
                     _la = self._input.LA(1)
                     if not(_la==pyGramParser.EQ or _la==pyGramParser.NE):
-                        self._errHandler.recoverInline(self)
+                        localctx.op = self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
@@ -2126,6 +2126,7 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.Term4Context
             super().__init__(parser)
+            self.op = None # Token
             self.copyFrom(ctx)
 
         def term4(self):
@@ -2212,9 +2213,10 @@ class pyGramParser ( Parser ):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
                     self.state = 283
+                    localctx.op = self._input.LT(1)
                     _la = self._input.LA(1)
                     if not(_la==pyGramParser.PLUS or _la==pyGramParser.MINUS):
-                        self._errHandler.recoverInline(self)
+                        localctx.op = self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
@@ -2280,6 +2282,7 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.Term5Context
             super().__init__(parser)
+            self.op = None # Token
             self.copyFrom(ctx)
 
         def term5(self):
@@ -2341,9 +2344,10 @@ class pyGramParser ( Parser ):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
                     self.state = 294
+                    localctx.op = self._input.LT(1)
                     _la = self._input.LA(1)
                     if not(_la==pyGramParser.TIMES or _la==pyGramParser.DIVIDES):
-                        self._errHandler.recoverInline(self)
+                        localctx.op = self._errHandler.recoverInline(self)
                     else:
                         self._errHandler.reportMatch(self)
                         self.consume()
@@ -2385,6 +2389,7 @@ class pyGramParser ( Parser ):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a pyGramParser.Term6Context
             super().__init__(parser)
+            self.op = None # Token
             self.copyFrom(ctx)
 
         def term6(self):
@@ -2449,16 +2454,17 @@ class pyGramParser ( Parser ):
                 localctx = pyGramParser.Minus_notContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
                 self.state = 301
+                localctx.op = self._input.LT(1)
                 _la = self._input.LA(1)
                 if not(_la==pyGramParser.MINUS or _la==pyGramParser.NOT):
-                    self._errHandler.recoverInline(self)
+                    localctx.op = self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
                     self.consume()
                 self.state = 302
                 self.term6()
                 pass
-            elif token in [pyGramParser.OPEN, pyGramParser.INPUT, pyGramParser.ID, pyGramParser.INT_VALUE, pyGramParser.FLOAT_VALUE, pyGramParser.STR_VALUE, pyGramParser.BOOL_VALUE]:
+            elif token in [pyGramParser.OPEN, pyGramParser.INPUT, pyGramParser.INT_VALUE, pyGramParser.FLOAT_VALUE, pyGramParser.STR_VALUE, pyGramParser.BOOL_VALUE, pyGramParser.ID]:
                 localctx = pyGramParser.E_factorContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
                 self.state = 303

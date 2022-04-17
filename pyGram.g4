@@ -64,22 +64,22 @@ term returns [type]
     ;
 
 term2   returns [type]
-        : term2 (GT | LT | LE | GE) term3 #comp_logic
+        : term2 op=(GT | LT | LE | GE) term3 #comp_logic
         | term3 #e_term3
         ;
 
 term3   returns [type]
-        : term3 (EQ | NE) term4 #eq_logic
+        : term3 op=(EQ | NE) term4 #eq_logic
         | term4 #e_term4
         ;
 
 term4   returns [type]
-        : term4 (PLUS | MINUS) term5 #sum_minus
+        : term4 op=(PLUS | MINUS) term5 #sum_minus
         | term5 #e_term5
         ;
 
 term5   returns [type]
-        : term5 (TIMES | DIVIDES) term6 #time_div
+        : term5 op=(TIMES | DIVIDES) term6 #time_div
         | term6 #e_term6
         ;
 
@@ -158,13 +158,14 @@ PRINT: 'print';
 INPUT: 'input';
 RANGE: 'range';
 
-//ID
-ID: [a-zA-Z][a-zA-Z0-9]*;
-
 //Valores
 INT_VALUE: [0-9]+;
 FLOAT_VALUE: [0-9]+[.][0-9]+;
 STR_VALUE: ["]~["]*["];
 BOOL_VALUE: 'True' | 'False';
+
+//ID
+ID: [a-zA-Z][a-zA-Z0-9]*;
+
 
 WS: [ \t\r\n] -> skip;
