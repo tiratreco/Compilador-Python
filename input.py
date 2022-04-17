@@ -1,6 +1,20 @@
-def int teste (int a, float b):
+int numero;
+
+def int fatorial (int fat):
+    if fat > 1:
+        print fat;
+        return fat * fatorial(fat - 1);
+    } else:
+        return 1;
+    }
+}
+
+def void resultado (int valor):
+    print "Resultado: ", valor;
 }
 
 main():
-    teste(3, 2);
+    print "Fatorial de N. Digite o numero?";
+    numero = input();
+    resultado (fatorial (numero));
 }

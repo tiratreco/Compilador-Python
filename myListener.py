@@ -13,21 +13,57 @@ class myListener(pyGramListener):
     def __isNumeric(self, type):
         return (type == 'float') or (type == 'int')
 
-    def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
+    def enterL_type(self, ctx:pyGramParser.L_typeContext):
         self.stack_block.append('function')
+        ctx_type = ctx.TYPE(0).getText() if ctx.TYPE(0).getText() != 'int' else 'integer'
+        function_id = ctx.ID(0).getText()
+        self.symbol_table[function_id] = ctx_type
+
+        args = []
+        for arg_id,arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
+            arg_type_text = arg_type.getText() if arg_type.getText() != 'int' else 'integer'
+            self.symbol_table[arg_id.getText()] = arg_type_text
+            args.append(arg_type_text)
+
+        self.functions_args[function_id] = args
+
+    def enterL_void(self, ctx:pyGramParser.L_voidContext):
+        self.stack_block.append('function')
+        function_id = ctx.ID(0).getText()
+        self.symbol_table[function_id] = 'NoneType'
+
+        args = []
+        for arg_id,arg_type in list(zip(ctx.ID()[1:], ctx.TYPE())):
+            arg_type_text = arg_type.getText() if arg_type.getText() != 'int' else 'integer'
+            self.symbol_table[arg_id.getText()] = arg_type_text
+            args.append(arg_type_text)
+
+        self.functions_args[function_id] = args
+
+    def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
+        ctx_id = ctx.ID().getText()
+        if ctx_id not in self.symbol_table.keys():
+            raise UndeclaredVariable(ctx_id)
 
     def enterR_for(self, ctx:pyGramParser.R_forContext):
+        ctx_id = ctx.ID().getText()
+        if ctx_id not in self.symbol_table.keys():
+            raise UndeclaredVariable(ctx_id)
+
+        if self.symbol_table[ctx_id] != 'integer':
+            raise UnexpectedTypeError('integer', self.symbol_table[ctx_id])
+
         self.stack_block.append('loop')
 
     def enterR_while(self, ctx:pyGramParser.R_whileContext):
         self.stack_block.append('loop')
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
-        if not 'function' in self.stack_block:
+        if 'function' not in self.stack_block:
             raise ReturnException()
 
     def enterR_break(self, ctx:pyGramParser.R_breakContext):
-        if self.stack_block[len(self.stack_block)] != 'loop':
+        if 'loop' not in self.stack_block:
             raise BreakException()
 
     def exitR_for(self, ctx:pyGramParser.R_forContext):
@@ -39,52 +75,55 @@ class myListener(pyGramListener):
     def exitDeclaration(self, ctx:pyGramParser.DeclarationContext):
         ctx_type = ctx.TYPE().getText() if ctx.TYPE().getText() != 'int' else 'integer'
 
-        for token in ctx.getTokens(pyGramParser.ID):
+        for token in ctx.ID():
             self.symbol_table[token.getText()] = ctx_type
 
+        print(self.symbol_table)
+
     def exitL_type(self, ctx:pyGramParser.L_typeContext):
-        ctx_type = ctx.TYPE(0).getText() if ctx.TYPE(0).getText() != 'int' else 'integer'
-        function_id = ctx.ID(0).getText()
-        self.symbol_table[function_id] = ctx_type
+        self.stack_block.pop()
 
-        args = []
-        for token_type in ctx.getTokens(pyGramParser.TYPE)[1:]:
-            arg_type = token_type.getText() if token_type.getText() != 'int' else 'integer'
-            args.append(arg_type)
-
-        self.functions_args[function_id] = args
+        for arg_id in ctx.ID()[1:]:
+            del self.symbol_table[arg_id]
 
     def exitL_void(self, ctx:pyGramParser.L_voidContext):
-        function_id = ctx.ID(0).getText()
-        self.symbol_table[function_id] = 'NoneType'
+        self.stack_block.pop()
 
-        args = []
-        for token_type in ctx.getTokens(pyGramParser.TYPE):
-            arg_type = token_type.getText() if token_type.getText() != 'int' else 'integer'
-            args.append(arg_type)
-
-        self.functions_args[function_id] = args
+        for arg_id in ctx.ID()[1:]:
+            del self.symbol_table[arg_id]
 
     def exitFunction_call(self, ctx:pyGramParser.Function_callContext):
         function_id = ctx.ID().getText()
-        self.stack_block.pop()
 
         if len(self.functions_args[function_id]) != len(ctx.expr()):
-            ctx.type = 'TypeError'
-            return
+            raise MissingArgument(len(self.functions_args[function_id]), len(ctx.expr()))
 
         for expected, recieved in list(zip(self.functions_args[function_id], ctx.expr())):
             if expected != recieved.type:
-                ctx.type = 'TypeError'
-                return
+                raise UnexpectedTypeError(expected, recieved.type)
 
         ctx.type = self.symbol_table[ctx.ID().getText()]
+
+    def exitAssigment(self, ctx:pyGramParser.AssigmentContext):
+        ctx_id = ctx.ID().getText()
+        if ctx_id not in self.symbol_table.keys():
+            raise UndeclaredVariable(ctx_id)
+
+        expected = self.symbol_table[ctx_id]
+        recieved = ctx.expr().type
+        if expected != recieved:
+            raise UnexpectedTypeError(expected, recieved)
 
     def exitL_expr(self, ctx:pyGramParser.L_exprContext):
         ctx.type = ctx.expr().type
 
     def exitL_id(self, ctx:pyGramParser.L_idContext):
-        ctx.type = self.symbol_table[ctx.ID().getText()]
+        teste = ctx.ID()
+        ctx_id = ctx.ID().getText()
+        if ctx_id not in self.symbol_table.keys():
+            raise UndeclaredVariable(ctx_id)
+
+        ctx.type = self.symbol_table[ctx_id]
 
     def exitL_int_value(self, ctx:pyGramParser.L_int_valueContext):
         ctx.type = 'integer'

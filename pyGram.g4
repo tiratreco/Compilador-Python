@@ -84,7 +84,7 @@ term5   returns [type]
         ;
 
 term6 returns [type]
-        : (MINUS | NOT) term6 #minus_not
+        : op=(MINUS | NOT) term6 #minus_not
         | factor #e_factor
         ;
 
