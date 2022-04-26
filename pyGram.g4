@@ -51,7 +51,9 @@ r_print: PRINT (expr (COMMA expr)*)? SEMI_COLON
 declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON;
 
 assigment: ID ASSIGNMENT expr SEMI_COLON
+         | ID ASSIGNMENT r_input SEMI_COLON
 ;
+
 
 expr returns [type]
     : expr OR term #or_logic
@@ -95,7 +97,6 @@ factor  returns [type]
         | FLOAT_VALUE #l_float_value//float
         | STR_VALUE #l_str_value//string
         | BOOL_VALUE #l_bool_value// boolean
-        | r_input #l_input//string
         | function_call #l_function_call//function_call.type
         ;
 
