@@ -50,8 +50,8 @@ r_print: PRINT (expr (COMMA expr)*)? SEMI_COLON
 
 declaration: TYPE ID (ASSIGNMENT expr)? (COMMA ID (ASSIGNMENT expr)?)* SEMI_COLON;
 
-assigment: ID ASSIGNMENT expr SEMI_COLON
-         | ID ASSIGNMENT r_input SEMI_COLON
+assigment: ID ASSIGNMENT expr SEMI_COLON #e_assigment
+         | ID ASSIGNMENT r_input SEMI_COLON #input
 ;
 
 

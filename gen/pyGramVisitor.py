@@ -1,4 +1,4 @@
-# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -79,8 +79,13 @@ class pyGramVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by pyGramParser#assigment.
-    def visitAssigment(self, ctx:pyGramParser.AssigmentContext):
+    # Visit a parse tree produced by pyGramParser#e_assigment.
+    def visitE_assigment(self, ctx:pyGramParser.E_assigmentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by pyGramParser#input.
+    def visitInput(self, ctx:pyGramParser.InputContext):
         return self.visitChildren(ctx)
 
 
@@ -181,11 +186,6 @@ class pyGramVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by pyGramParser#l_bool_value.
     def visitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by pyGramParser#l_input.
-    def visitL_input(self, ctx:pyGramParser.L_inputContext):
         return self.visitChildren(ctx)
 
 

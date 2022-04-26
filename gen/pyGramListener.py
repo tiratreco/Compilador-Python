@@ -1,4 +1,4 @@
-# Generated from C:/Users/panto/Documents/Repositórios/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -134,12 +134,21 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by pyGramParser#assigment.
-    def enterAssigment(self, ctx:pyGramParser.AssigmentContext):
+    # Enter a parse tree produced by pyGramParser#e_assigment.
+    def enterE_assigment(self, ctx:pyGramParser.E_assigmentContext):
         pass
 
-    # Exit a parse tree produced by pyGramParser#assigment.
-    def exitAssigment(self, ctx:pyGramParser.AssigmentContext):
+    # Exit a parse tree produced by pyGramParser#e_assigment.
+    def exitE_assigment(self, ctx:pyGramParser.E_assigmentContext):
+        pass
+
+
+    # Enter a parse tree produced by pyGramParser#input.
+    def enterInput(self, ctx:pyGramParser.InputContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#input.
+    def exitInput(self, ctx:pyGramParser.InputContext):
         pass
 
 
@@ -320,15 +329,6 @@ class pyGramListener(ParseTreeListener):
 
     # Exit a parse tree produced by pyGramParser#l_bool_value.
     def exitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#l_input.
-    def enterL_input(self, ctx:pyGramParser.L_inputContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#l_input.
-    def exitL_input(self, ctx:pyGramParser.L_inputContext):
         pass
 
 

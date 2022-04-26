@@ -14,6 +14,9 @@ class myListener(pyGramListener):
     def __isNumeric(self, type):
         return (type == 'float') or (type == 'int')
 
+    def __isInsideFunction(self):
+        return 'function' not in self.stack_block
+
     def enterL_type(self, ctx:pyGramParser.L_typeContext):
         self.stack_block.append('function')
         function_id = ctx.ID(0).getText()
@@ -32,14 +35,14 @@ class myListener(pyGramListener):
         self.symbol_table[function_id] = 'NoneType'
 
         args = []
-        for arg_id,arg_type in list(zip(ctx.ID()[1:], ctx.TYPE())):
+        for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE())):
             self.symbol_table[arg_id.getText()] = arg_type.getText()
             args.append(arg_type.getText())
 
         self.functions_args[function_id] = args
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
-        if 'function' not in self.stack_block:
+        if self.__isInsideFunction:
             raise ReturnException()
 
     def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
@@ -98,7 +101,7 @@ class myListener(pyGramListener):
         for token in ctx.ID():
             self.symbol_table[token.getText()] = ctx.TYPE().getText()
 
-    def exitAssigment(self, ctx:pyGramParser.AssigmentContext):
+    def exitE_assigment(self, ctx:pyGramParser.E_assigmentContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
             raise UndeclaredVariable(ctx_id)
@@ -107,6 +110,11 @@ class myListener(pyGramListener):
         recieved = ctx.expr().type
         if expected != recieved:
             raise UnexpectedTypeError(expected, recieved)
+
+    def exitInput(self, ctx:pyGramParser.InputContext):
+        ctx_id = ctx.ID().getText()
+        if ctx_id not in self.symbol_table.keys():
+            raise UndeclaredVariable(ctx_id)
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.expr().type != 'boolean':
