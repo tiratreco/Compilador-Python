@@ -218,8 +218,5 @@ class myListener(pyGramListener):
     def exitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
         ctx.type = 'boolean'
 
-    def exitL_input(self, ctx:pyGramParser.L_inputContext):
-        ctx.type = 'string'
-
     def exitL_function_call(self, ctx:pyGramParser.L_function_callContext):
         ctx.type = ctx.function_call().type
