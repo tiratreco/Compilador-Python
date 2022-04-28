@@ -15,7 +15,7 @@ class myListener(pyGramListener):
         return (type == 'float') or (type == 'int')
 
     def __isInsideFunction(self):
-        return 'function' not in self.stack_block
+        return 'function' in self.stack_block
 
     def enterL_type(self, ctx:pyGramParser.L_typeContext):
         self.stack_block.append('function')
@@ -42,7 +42,7 @@ class myListener(pyGramListener):
         self.functions_args[function_id] = args
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
-        if self.__isInsideFunction:
+        if not self.__isInsideFunction():
             raise ReturnException()
 
     def enterFunction_call(self, ctx:pyGramParser.Function_callContext):
