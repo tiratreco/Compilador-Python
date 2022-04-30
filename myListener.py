@@ -67,6 +67,9 @@ class myListener(pyGramListener):
         if 'loop' not in self.stack_block:
             raise BreakException()
 
+    def enterR_if(self, ctx:pyGramParser.R_ifContext):
+        print(ctx)
+
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         self.stack_block.pop()
 
@@ -99,8 +102,8 @@ class myListener(pyGramListener):
 
     def exitDeclaration(self, ctx: pyGramParser.DeclarationContext):
         for token in ctx.ID():
-            if ctx.TYPE().getText() in self.symbol_table:
-                raise AlreadyDeclaredError(ctx.TYPE().getText())
+            if token.getText() in self.symbol_table:
+                raise AlreadyDeclaredError(token.getText())
             self.symbol_table[token.getText()] = ctx.TYPE().getText()
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
