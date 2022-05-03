@@ -67,7 +67,7 @@ class myListener(pyGramListener):
         if 'loop' not in self.stack_block:
             raise BreakException()
 
-    def enterR_if(self, ctx:pyGramParser.R_ifContext):
+    def enterR_if(self, ctx: pyGramParser.R_ifContext):
         print(ctx)
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
@@ -144,6 +144,8 @@ class myListener(pyGramListener):
         ctx.type = ctx.term2().type
 
     def exitComp_logic(self, ctx: pyGramParser.Comp_logicContext):
+        if ctx.term2().type != ctx.term3().type:
+            raise ExprTypeError(ctx.term2().type, ctx.term3().type, ctx.op.text)
         ctx.type = 'boolean'
 
     def exitE_term3(self, ctx: pyGramParser.E_termContext):
@@ -186,7 +188,6 @@ class myListener(pyGramListener):
 
     def exitMinus_not(self, ctx: pyGramParser.Minus_notContext):
         if ctx.op.text == '-':  # minus
-            teste = ctx.term6().type
             if self.__isNumeric(ctx.term6().type):
                 ctx.type = ctx.term6().type
             else:
@@ -204,11 +205,9 @@ class myListener(pyGramListener):
         ctx.type = ctx.expr().type
 
     def exitL_id(self, ctx: pyGramParser.L_idContext):
-        teste = ctx.ID()
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
             raise UndeclaredVariable(ctx_id)
-
         ctx.type = self.symbol_table[ctx_id]
 
     def exitL_int_value(self, ctx: pyGramParser.L_int_valueContext):
