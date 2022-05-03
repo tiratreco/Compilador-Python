@@ -21,14 +21,14 @@ class myListener(pyGramListener):
         self.stack_block.append('function')
         function_id = ctx.ID(0).getText()
         if function_id in self.symbol_table:
-            raise AlreadyDeclaredError(function_id)
+            raise AlreadyDeclaredError(ctx.start.line, function_id)
 
         self.symbol_table[function_id] = ctx.TYPE(0).getText()
 
         args = []
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
             if arg_id.getText() in self.symbol_table:
-                raise AlreadyDeclaredError(arg_id.getText())
+                raise AlreadyDeclaredError(ctx.start.line, arg_id.getText())
             self.symbol_table[arg_id.getText()] = arg_type.getText()
             args.append(arg_type.getText())
 
@@ -48,20 +48,20 @@ class myListener(pyGramListener):
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
         if not self.__isInsideFunction():
-            raise ReturnException()
+            raise ReturnException(ctx.start.line)
 
     def enterFunction_call(self, ctx: pyGramParser.Function_callContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
-            raise UndeclaredVariable(ctx_id)
+            raise UndeclaredVariable(ctx.start.line, ctx_id)
 
     def enterR_for(self, ctx: pyGramParser.R_forContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
-            raise UndeclaredVariable(ctx_id)
+            raise UndeclaredVariable(ctx.start.line, ctx_id)
 
         if not self.__isNumeric(self.symbol_table[ctx_id]):
-            raise UnexpectedTypeError('int', self.symbol_table[ctx_id])
+            raise UnexpectedTypeError(ctx.start.line, 'int', self.symbol_table[ctx_id])
 
         self.stack_block.append('loop')
 
@@ -70,11 +70,11 @@ class myListener(pyGramListener):
 
     def enterR_break(self, ctx: pyGramParser.R_breakContext):
         if 'loop' not in self.stack_block:
-            raise BreakException()
+            raise BreakException(ctx.start.line)
 
     def exitR_if(self, ctx: pyGramParser.R_ifContext):
         if ctx.expr().type != 'boolean':
-            raise UnexpectedTypeError('boolean', ctx.expr().type)
+            raise UnexpectedTypeError(ctx.start.line, 'boolean', ctx.expr().type)
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         self.stack_block.pop()
@@ -92,11 +92,11 @@ class myListener(pyGramListener):
         function_id = ctx.ID().getText()
 
         if len(self.functions_args[function_id]) != len(ctx.expr()):
-            raise MissingArgument(len(self.functions_args[function_id]), len(ctx.expr()))
+            raise MissingArgument(ctx.start.line, len(self.functions_args[function_id]), len(ctx.expr()))
 
         for expected, recieved in list(zip(self.functions_args[function_id], ctx.expr())):
             if expected != recieved.type:
-                raise UnexpectedTypeError(expected, recieved.type)
+                raise UnexpectedTypeError(ctx.start.line, expected, recieved.type)
 
         ctx.type = self.symbol_table[ctx.ID().getText()]
 
@@ -105,35 +105,35 @@ class myListener(pyGramListener):
 
     def exitR_while(self, ctx: pyGramParser.R_whileContext):
         if ctx.expr().type != 'boolean':
-            raise UnexpectedTypeError('boolean', ctx.expr().type)
+            raise UnexpectedTypeError(ctx.start.line, 'boolean', ctx.expr().type)
         self.stack_block.pop()
 
     def exitDeclaration(self, ctx: pyGramParser.DeclarationContext):
         for token in ctx.ID():
             if token.getText() in self.symbol_table:
-                raise AlreadyDeclaredError(token.getText())
+                raise AlreadyDeclaredError(ctx.start.line, token.getText())
             self.symbol_table[token.getText()] = ctx.TYPE().getText()
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
-            raise UndeclaredVariable(ctx_id)
+            raise UndeclaredVariable(ctx.start.line, ctx_id)
 
         expected = self.symbol_table[ctx_id]
         recieved = ctx.expr().type
         if expected != recieved:
-            raise UnexpectedTypeError(expected, recieved)
+            raise UnexpectedTypeError(ctx.start.line, expected, recieved)
 
     def exitInput(self, ctx: pyGramParser.InputContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
-            raise UndeclaredVariable(ctx_id)
+            raise UndeclaredVariable(ctx.start.line, ctx_id)
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.expr().type != 'boolean':
-            raise ExprTypeError(ctx.expr().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.expr().type, ctx.op.text)
         elif ctx.term().type != 'boolean':
-            raise ExprTypeError(ctx.term().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term().type, ctx.op.text)
         else:
             ctx.type = 'boolean'
 
@@ -142,9 +142,9 @@ class myListener(pyGramListener):
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':
-            raise ExprTypeError(ctx.term().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term().type, ctx.op.text)
         elif ctx.term2().type != 'boolean':
-            raise ExprTypeError(ctx.term2().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term2().type, ctx.op.text)
         else:
             ctx.type = 'boolean'
 
@@ -153,7 +153,7 @@ class myListener(pyGramListener):
 
     def exitComp_logic(self, ctx: pyGramParser.Comp_logicContext):
         if ctx.term2().type != ctx.term3().type:
-            raise ExprTypeError(ctx.term2().type, ctx.term3().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term2().type, ctx.term3().type, ctx.op.text)
         ctx.type = 'boolean'
 
     def exitE_term3(self, ctx: pyGramParser.E_termContext):
@@ -161,7 +161,7 @@ class myListener(pyGramListener):
 
     def exitEq_logic(self, ctx: pyGramParser.Eq_logicContext):
         if ctx.term3().type != ctx.term4().type:
-            raise ExprTypeError(ctx.term3().type, ctx.term4().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term3().type, ctx.term4().type, ctx.op.text)
         ctx.type = 'boolean'
 
     def exitE_term4(self, ctx: pyGramParser.E_termContext):
@@ -169,9 +169,9 @@ class myListener(pyGramListener):
 
     def exitSum_minus(self, ctx: pyGramParser.Sum_minusContext):
         if not self.__isNumeric(ctx.term4().type):
-            raise ExprTypeError(ctx.term4().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term4().type, ctx.op.text)
         elif not self.__isNumeric(ctx.term5().type):
-            raise ExprTypeError(ctx.term5().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
         else:
             if ctx.term4().type == 'float' or ctx.term5().type == 'float':
                 ctx.type = 'float'
@@ -183,9 +183,9 @@ class myListener(pyGramListener):
 
     def exitTime_div(self, ctx: pyGramParser.Time_divContext):
         if not self.__isNumeric(ctx.term5().type):
-            raise ExprTypeError(ctx.term5().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
         if not self.__isNumeric(ctx.term6().type):
-            raise ExprTypeError(ctx.term6().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
         else:
             if self.__isNumeric(ctx.term5().type) and self.__isNumeric(ctx.term6().type):
                 if ctx.term5().type == 'float' or ctx.term6().type == 'float':
@@ -201,12 +201,12 @@ class myListener(pyGramListener):
             if self.__isNumeric(ctx.term6().type):
                 ctx.type = ctx.term6().type
             else:
-                raise ExprTypeError(ctx.term6().type, ctx.op.text)
+                raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
         elif ctx.op.text == 'not':  # not
             if ctx.term6().type == 'boolean':
                 ctx.type = 'boolean'
             else:
-                raise ExprTypeError(ctx.term6().type, ctx.op.text)
+                raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
 
     def exitE_factor(self, ctx: pyGramParser.E_factorContext):
         ctx.type = ctx.factor().type
@@ -217,7 +217,7 @@ class myListener(pyGramListener):
     def exitL_id(self, ctx: pyGramParser.L_idContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table.keys():
-            raise UndeclaredVariable(ctx_id)
+            raise UndeclaredVariable(ctx.start.line, ctx_id)
         ctx.type = self.symbol_table[ctx_id]
 
     def exitL_int_value(self, ctx: pyGramParser.L_int_valueContext):
