@@ -67,8 +67,9 @@ class myListener(pyGramListener):
         if 'loop' not in self.stack_block:
             raise BreakException()
 
-    def enterR_if(self, ctx: pyGramParser.R_ifContext):
-        print(ctx)
+    def exitR_if(self, ctx: pyGramParser.R_ifContext):
+        if ctx.expr().type != 'boolean':
+            raise UnexpectedTypeError('boolean', ctx.expr().type)
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         self.stack_block.pop()
@@ -98,6 +99,8 @@ class myListener(pyGramListener):
         self.stack_block.pop()
 
     def exitR_while(self, ctx: pyGramParser.R_whileContext):
+        if ctx.expr().type != 'boolean':
+            raise UnexpectedTypeError('boolean', ctx.expr().type)
         self.stack_block.pop()
 
     def exitDeclaration(self, ctx: pyGramParser.DeclarationContext):
@@ -152,6 +155,8 @@ class myListener(pyGramListener):
         ctx.type = ctx.term3().type
 
     def exitEq_logic(self, ctx: pyGramParser.Eq_logicContext):
+        if ctx.term3().type != ctx.term4().type:
+            raise ExprTypeError(ctx.term3().type, ctx.term4().type, ctx.op.text)
         ctx.type = 'boolean'
 
     def exitE_term4(self, ctx: pyGramParser.E_termContext):
