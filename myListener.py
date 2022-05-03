@@ -20,10 +20,15 @@ class myListener(pyGramListener):
     def enterL_type(self, ctx: pyGramParser.L_typeContext):
         self.stack_block.append('function')
         function_id = ctx.ID(0).getText()
+        if function_id in self.symbol_table:
+            raise AlreadyDeclaredError(function_id)
+
         self.symbol_table[function_id] = ctx.TYPE(0).getText()
 
         args = []
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
+            if arg_id.getText() in self.symbol_table:
+                raise AlreadyDeclaredError(arg_id.getText())
             self.symbol_table[arg_id.getText()] = arg_type.getText()
             args.append(arg_type.getText())
 
