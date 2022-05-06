@@ -1,15 +1,32 @@
-class Generator:
+class Id:
+    def __init__(self, address: int = None, type=None, function: bool = False, local: bool = False):
+        self.type = type
+        self.address = address
+        self.function = function
+        self.local = local
 
-    def __init__(self, name):
+
+class Generator:
+    var_list = []  # index = endereco
+
+    def __init__(self, name, symbol_table):
         self.name = name
         self.file = open(name + '.j', 'w+')
         self.start_file()
+        self.symbol_table = symbol_table
 
-    # remove tabs de strings antes de salvar no arquivo
+    # remove tabs de strings antes de escrever linha
     def __write(self, string):
         for s in string.split('\n'):
             if s.strip():
-                self.file.write(s.strip()+"\n")
+                self.file.write(s.strip() + "\n")
+
+    def __save_value(self, address):
+        self.__write(
+            """
+            .field public static {} I
+            """.format(self.var_list[address].name)
+        )
 
     def start_file(self):
         self.__write(
