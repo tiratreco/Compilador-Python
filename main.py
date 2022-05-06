@@ -7,7 +7,8 @@ from gen.pyGramLexer import pyGramLexer
 from gen.pyGramParser import pyGramParser
 
 if __name__ == '__main__':
-    data = FileStream('input.py')
+    fileName = 'input'
+    data = FileStream(fileName+".py")
 
     #Lexer
     lexer = pyGramLexer(data)
@@ -18,6 +19,6 @@ if __name__ == '__main__':
     tree = parser.prog()
 
     #Walker using listener
-    l = myListener()
+    l = myListener(fileName)
     walker = ParseTreeWalker()
     walker.walk(l, tree)

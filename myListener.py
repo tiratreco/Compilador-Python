@@ -2,6 +2,7 @@ if __name__ is not None and "." in __name__:
     from gen.pyGramParser import pyGramParser
 else:
     from gen.pyGramParser import pyGramParser
+from JasminGenerator import Generator
 from SematicErrors import *
 from gen.pyGramListener import pyGramListener
 
@@ -11,11 +12,17 @@ class myListener(pyGramListener):
     functions_args = {}
     stack_block = []
 
+    def __init__(self, filename):
+        self.jasmin = Generator(filename)
+
     def __isNumeric(self, type):
         return (type == 'float') or (type == 'int')
 
     def __isInsideFunction(self):
         return 'function' in self.stack_block
+
+    def enterMain(self, ctx: pyGramParser.MainContext):
+        self.jasmin.enter_main()
 
     def enterL_type(self, ctx: pyGramParser.L_typeContext):
         self.stack_block.append('function')
@@ -71,6 +78,9 @@ class myListener(pyGramListener):
     def enterR_break(self, ctx: pyGramParser.R_breakContext):
         if 'loop' not in self.stack_block:
             raise BreakException(ctx.start.line)
+
+    def exitMain(self, ctx:pyGramParser.MainContext):
+        self.jasmin.exit_main()
 
     def exitR_if(self, ctx: pyGramParser.R_ifContext):
         if ctx.expr().type != 'boolean':
