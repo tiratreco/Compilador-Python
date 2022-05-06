@@ -6,6 +6,19 @@ class Id:
         self.local = local
 
 
+def type_convert(type):
+    if type == 'string':
+        return 'S'
+    elif type == 'int':
+        return 'I'
+    elif type == 'float':
+        return 'F'
+    elif type == 'NoneType':
+        return 'V'
+    else:
+        return None
+
+
 class Generator:
     var_list = []  # index = endereco
 
@@ -15,7 +28,7 @@ class Generator:
         self.start_file()
         self.symbol_table = symbol_table
 
-    # remove tabs de strings antes de escrever linha
+    # remove tabs de strings antes de escrever a linha
     def __write(self, string):
         for s in string.split('\n'):
             if s.strip():
@@ -52,6 +65,23 @@ class Generator:
             """
         )
 
+    def enter_function(self, name):  # TODO: receive parameters
+        self.__write(
+            """
+            .method public static {}(){}
+           .limit stack 5
+           .limit locals 100
+            """.format(name, type_convert(self.symbol_table[name].type))
+        )
+
+    def exit_function(self, name):
+        self.__write(
+            """
+            ireturn
+            .end method
+            """
+        )
+
     def print(self, text):
         self.__write(
             """
@@ -61,13 +91,12 @@ class Generator:
             """.format(text)
         )
 
-    def int_sum(self, reg1, reg2, result):
+    def int_sum(self, var1, var2):
         self.__write(
             """
             ; int_sum
             iload {}
             iload {}
             iadd
-            istore {}
-            """.format(reg1, reg2, result)
+            """.format(var1.address, var2.address)
         )

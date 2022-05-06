@@ -40,6 +40,7 @@ class myListener(pyGramListener):
             args.append(arg_type.getText())
 
         self.functions_args[function_id] = args
+        self.jasmin.enter_function(function_id)
 
     def enterL_void(self, ctx: pyGramParser.L_voidContext):
         self.stack_block.append('function')
@@ -52,6 +53,7 @@ class myListener(pyGramListener):
             args.append(arg_type.getText())
 
         self.functions_args[function_id] = args
+        self.jasmin.enter_function(function_id)
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
         if not self.__is_inside_function():
@@ -87,12 +89,16 @@ class myListener(pyGramListener):
             raise UnexpectedTypeError(ctx.start.line, 'boolean', ctx.expr().type)
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
-        self.stack_block.pop()
+        # saindo da função antes de apagar referencias que podem ser importantes
+        self.jasmin.exit_function(ctx.ID()[0])
 
+        self.stack_block.pop()
         for arg_id in ctx.ID()[1:]:
             del self.symbol_table[arg_id.getText()]
 
+
     def exitL_void(self, ctx: pyGramParser.L_voidContext):
+        self.jasmin.exit_function(ctx.ID()[0])
         self.stack_block.pop()
 
         for arg_id in ctx.ID()[1:]:
