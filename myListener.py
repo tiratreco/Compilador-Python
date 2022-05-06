@@ -59,12 +59,12 @@ class myListener(pyGramListener):
 
     def enterFunction_call(self, ctx: pyGramParser.Function_callContext):
         ctx_id = ctx.ID().getText()
-        if ctx_id not in self.symbol_table.keys():
+        if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
     def enterR_for(self, ctx: pyGramParser.R_forContext):
         ctx_id = ctx.ID().getText()
-        if ctx_id not in self.symbol_table.keys():
+        if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
         if not self.__is_numeric(self.symbol_table[ctx_id].type):
@@ -126,7 +126,7 @@ class myListener(pyGramListener):
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
         ctx_id = ctx.ID().getText()
-        if ctx_id not in self.symbol_table.keys():
+        if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
         expected = self.symbol_table[ctx_id].type
@@ -136,7 +136,7 @@ class myListener(pyGramListener):
 
     def exitInput(self, ctx: pyGramParser.InputContext):
         ctx_id = ctx.ID().getText()
-        if ctx_id not in self.symbol_table.keys():
+        if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
@@ -226,7 +226,7 @@ class myListener(pyGramListener):
 
     def exitL_id(self, ctx: pyGramParser.L_idContext):
         ctx_id = ctx.ID().getText()
-        if ctx_id not in self.symbol_table.keys():
+        if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
         ctx.type = self.symbol_table[ctx_id].type
 
