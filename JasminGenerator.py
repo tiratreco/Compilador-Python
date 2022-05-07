@@ -8,7 +8,7 @@ class Id:
 
 def type_convert(type):
     if type == 'string':
-        return 'S'
+        return 'Ljava/lang/String;'
     elif type == 'int':
         return 'I'
     elif type == 'float':
@@ -27,6 +27,10 @@ class Generator:
         self.file = open(name + '.j', 'w+')
         self.start_file()
         self.symbol_table = symbol_table
+        self.top_index = 0
+
+    def close_file(self):
+        self.file.close()
 
     # remove tabs de strings antes de escrever a linha
     def __write(self, string):
@@ -34,12 +38,13 @@ class Generator:
             if s.strip():
                 self.file.write(s.strip() + "\n")
 
-    def __save_value(self, address):
+    def create_global(self, var_name):
         self.__write(
             """
             .field public static {} I
-            """.format(self.var_list[address].name)
+            """.format(var_name)
         )
+        # TODO: salvar outros tipos
 
     def start_file(self):
         self.__write(
@@ -61,6 +66,7 @@ class Generator:
     def exit_main(self):
         self.__write(
             """
+            return
             .end method
             """
         )
@@ -82,21 +88,114 @@ class Generator:
             """
         )
 
-    def print(self, text):
+    def print(self, type, val):
         self.__write(
             """
             getstatic java/lang/System/out Ljava/io/PrintStream;
-            ldc "{}" 
-            invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V 
-            """.format(text)
+            iload {}
+            invokevirtual java/io/PrintStream/println({})V 
+            """.format(val, type_convert(type))
         )
 
-    def int_sum(self, var1, var2):
+    def int_sum(self, add1, add2):
         self.__write(
             """
-            ; int_sum
             iload {}
             iload {}
             iadd
-            """.format(var1.address, var2.address)
+            """.format(add1, add2)
         )
+        return self.store_val('int')
+
+    def int_mul(self):
+        self.__write(
+            """
+            imul
+            """
+        )
+
+    def store_val(self, type):
+        if type == 'str':
+            self.__write(  # TODO : armazenar string
+                """
+                """.format()
+            )
+        elif type == 'int' or type == 'boolean':
+            self.__write(
+                """
+                istore {}
+                """.format(self.top_index)
+            )
+        elif type == float:
+            self.__write(
+                """
+                fstore {}
+                """.format(type, self.top_index)
+            )
+        self.top_index += 1
+        return self.top_index - 1
+
+    def load_var(self, var):
+        var_data = self.symbol_table[var]
+        if var_data.local:  # local var
+            if var_data.type == 'integer' or var_data.type == 'boolean':
+                self.__write(
+                    """
+                     iload {}
+                     """.format(var_data.address)
+                )
+            elif var_data.type == 'float':
+                self.__write(
+                    """
+                    fload {}
+                    """.format(var_data.address)
+                )
+            # TODO: tratar string
+        else:  # global var
+            self.__write(
+                """
+                getstatic {}/{} {}
+                """.format(self.name, var, type_convert(self.symbol_table[var].type))
+            )
+        return self.store_val(var_data.type)
+
+    def store_var(self, var, address):
+        var_data = self.symbol_table[var]
+        if var_data.local:  # local var
+            if var_data.type == 'integer' or var_data.type == 'boolean':
+                self.__write(
+                    """
+                    ldc {}
+                    istore {}
+                    """.format(var_data.address, address)
+                )
+            elif var_data.type == 'float':
+                self.__write(
+                    """
+                    ldc {}
+                    fstore {}
+                    """.format(var_data.address, address)
+                )
+            # TODO: tratar string
+        else:  # global var
+            self.__write(
+                """
+                ldc {}
+                putstatic {}/{} {}
+                """.format(address, self.name, var, type_convert(self.symbol_table[var].type))
+            )
+
+    def do_int_sum(self):
+        self.__write(
+            """
+            iadd
+            """
+        )
+
+    def create_temp(self, val, type):
+        self.__write(
+            """
+            ldc {}
+            """.format(val)
+        )
+        return self.store_val(type)

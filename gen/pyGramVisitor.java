@@ -215,6 +215,13 @@ public interface pyGramVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitL_expr(pyGramParser.L_exprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code l_function_call}
+	 * labeled alternative in {@link pyGramParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitL_function_call(pyGramParser.L_function_callContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code l_id}
 	 * labeled alternative in {@link pyGramParser#factor}.
 	 * @param ctx the parse tree
@@ -249,13 +256,6 @@ public interface pyGramVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitL_bool_value(pyGramParser.L_bool_valueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code l_function_call}
-	 * labeled alternative in {@link pyGramParser#factor}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitL_function_call(pyGramParser.L_function_callContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pyGramParser#r_input}.
 	 * @param ctx the parse tree

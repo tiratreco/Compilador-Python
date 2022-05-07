@@ -1,3 +1,5 @@
+import os
+
 from antlr4 import *
 
 from gen.pyGramLexer import pyGramLexer
@@ -20,3 +22,7 @@ if __name__ == '__main__':
     l = myListener(fileName)
     walker = ParseTreeWalker()
     walker.walk(l, tree)
+
+    # Autoexecute
+    os.system('java -jar .\jasmin.jar .\{}'.format(fileName + '.j'))
+    os.system('java {}'.format(fileName))

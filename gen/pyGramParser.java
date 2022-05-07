@@ -2384,51 +2384,51 @@ public class pyGramParser extends Parser {
 				}
 				break;
 			case 2:
-				_localctx = new L_idContext(_localctx);
+				_localctx = new L_function_callContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(317);
-				match(ID);
+				function_call();
 				}
 				break;
 			case 3:
-				_localctx = new L_int_valueContext(_localctx);
+				_localctx = new L_idContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(318);
-				match(INT_VALUE);
+				match(ID);
 				}
 				break;
 			case 4:
-				_localctx = new L_float_valueContext(_localctx);
+				_localctx = new L_int_valueContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(319);
-				match(FLOAT_VALUE);
+				match(INT_VALUE);
 				}
 				break;
 			case 5:
-				_localctx = new L_str_valueContext(_localctx);
+				_localctx = new L_float_valueContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(320);
-				match(STR_VALUE);
+				match(FLOAT_VALUE);
 				}
 				break;
 			case 6:
-				_localctx = new L_bool_valueContext(_localctx);
+				_localctx = new L_str_valueContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(321);
-				match(BOOL_VALUE);
+				match(STR_VALUE);
 				}
 				break;
 			case 7:
-				_localctx = new L_function_callContext(_localctx);
+				_localctx = new L_bool_valueContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(322);
-				function_call();
+				match(BOOL_VALUE);
 				}
 				break;
 			}
@@ -2753,10 +2753,10 @@ public class pyGramParser extends Parser {
 		"*\u0015\u0000\u0137\u0134\u0001\u0000\u0000\u0000\u0137\u0136\u0001\u0000"+
 		"\u0000\u0000\u0138)\u0001\u0000\u0000\u0000\u0139\u013a\u0005\u000f\u0000"+
 		"\u0000\u013a\u013b\u0003\u001c\u000e\u0000\u013b\u013c\u0005\u0010\u0000"+
-		"\u0000\u013c\u0144\u0001\u0000\u0000\u0000\u013d\u0144\u0005\'\u0000\u0000"+
-		"\u013e\u0144\u0005#\u0000\u0000\u013f\u0144\u0005$\u0000\u0000\u0140\u0144"+
-		"\u0005%\u0000\u0000\u0141\u0144\u0005&\u0000\u0000\u0142\u0144\u0003\n"+
-		"\u0005\u0000\u0143\u0139\u0001\u0000\u0000\u0000\u0143\u013d\u0001\u0000"+
+		"\u0000\u013c\u0144\u0001\u0000\u0000\u0000\u013d\u0144\u0003\n\u0005\u0000"+
+		"\u013e\u0144\u0005\'\u0000\u0000\u013f\u0144\u0005#\u0000\u0000\u0140"+
+		"\u0144\u0005$\u0000\u0000\u0141\u0144\u0005%\u0000\u0000\u0142\u0144\u0005"+
+		"&\u0000\u0000\u0143\u0139\u0001\u0000\u0000\u0000\u0143\u013d\u0001\u0000"+
 		"\u0000\u0000\u0143\u013e\u0001\u0000\u0000\u0000\u0143\u013f\u0001\u0000"+
 		"\u0000\u0000\u0143\u0140\u0001\u0000\u0000\u0000\u0143\u0141\u0001\u0000"+
 		"\u0000\u0000\u0143\u0142\u0001\u0000\u0000\u0000\u0144+\u0001\u0000\u0000"+

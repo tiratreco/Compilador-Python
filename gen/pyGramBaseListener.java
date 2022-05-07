@@ -387,6 +387,18 @@ public class pyGramBaseListener implements pyGramListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterL_function_call(pyGramParser.L_function_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitL_function_call(pyGramParser.L_function_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterL_id(pyGramParser.L_idContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -442,18 +454,6 @@ public class pyGramBaseListener implements pyGramListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitL_bool_value(pyGramParser.L_bool_valueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterL_function_call(pyGramParser.L_function_callContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitL_function_call(pyGramParser.L_function_callContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

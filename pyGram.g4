@@ -92,12 +92,12 @@ term6 returns [type]
 
 factor  returns [type]
         : OPEN expr CLOSE #l_expr// expr.type
+        | function_call #l_function_call//function_call.type
         | ID #l_id//symbol_table
         | INT_VALUE #l_int_value //integer
         | FLOAT_VALUE #l_float_value//float
         | STR_VALUE #l_str_value//string
         | BOOL_VALUE #l_bool_value// boolean
-        | function_call #l_function_call//function_call.type
         ;
 
 r_input: INPUT OPEN CLOSE

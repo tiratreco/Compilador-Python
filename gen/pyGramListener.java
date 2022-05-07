@@ -355,6 +355,18 @@ public interface pyGramListener extends ParseTreeListener {
 	 */
 	void exitL_expr(pyGramParser.L_exprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code l_function_call}
+	 * labeled alternative in {@link pyGramParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterL_function_call(pyGramParser.L_function_callContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code l_function_call}
+	 * labeled alternative in {@link pyGramParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitL_function_call(pyGramParser.L_function_callContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code l_id}
 	 * labeled alternative in {@link pyGramParser#factor}.
 	 * @param ctx the parse tree
@@ -414,18 +426,6 @@ public interface pyGramListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitL_bool_value(pyGramParser.L_bool_valueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code l_function_call}
-	 * labeled alternative in {@link pyGramParser#factor}.
-	 * @param ctx the parse tree
-	 */
-	void enterL_function_call(pyGramParser.L_function_callContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code l_function_call}
-	 * labeled alternative in {@link pyGramParser#factor}.
-	 * @param ctx the parse tree
-	 */
-	void exitL_function_call(pyGramParser.L_function_callContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pyGramParser#r_input}.
 	 * @param ctx the parse tree

@@ -96,7 +96,6 @@ class myListener(pyGramListener):
         for arg_id in ctx.ID()[1:]:
             del self.symbol_table[arg_id.getText()]
 
-
     def exitL_void(self, ctx: pyGramParser.L_voidContext):
         self.jasmin.exit_function(ctx.ID()[0])
         self.stack_block.pop()
@@ -129,6 +128,7 @@ class myListener(pyGramListener):
             if token.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, token.getText())
             self.symbol_table[token.getText()] = Id(type=ctx.TYPE().getText())
+            self.jasmin.create_global(token.getText())
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
         ctx_id = ctx.ID().getText()
@@ -140,10 +140,16 @@ class myListener(pyGramListener):
         if expected != recieved:
             raise UnexpectedTypeError(ctx.start.line, expected, recieved)
 
+        self.jasmin.store_var(ctx_id, ctx.expr().val)
+
     def exitInput(self, ctx: pyGramParser.InputContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
+
+    def exitR_print(self, ctx: pyGramParser.R_printContext):
+        self.jasmin.print(ctx.expr()[0].type, ctx.expr()[0].val)
+        # TODO : tratar varias exprs
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.expr().type != 'boolean':
@@ -155,6 +161,7 @@ class myListener(pyGramListener):
 
     def exitE_term(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term().type
+        ctx.val = ctx.term().val
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':
@@ -166,6 +173,7 @@ class myListener(pyGramListener):
 
     def exitE_term2(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term2().type
+        ctx.val = ctx.term2().val
 
     def exitComp_logic(self, ctx: pyGramParser.Comp_logicContext):
         if ctx.term2().type != ctx.term3().type:
@@ -174,6 +182,7 @@ class myListener(pyGramListener):
 
     def exitE_term3(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term3().type
+        ctx.val = ctx.term3().val
 
     def exitEq_logic(self, ctx: pyGramParser.Eq_logicContext):
         if ctx.term3().type != ctx.term4().type:
@@ -182,6 +191,7 @@ class myListener(pyGramListener):
 
     def exitE_term4(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term4().type
+        ctx.val = ctx.term4().val
 
     def exitSum_minus(self, ctx: pyGramParser.Sum_minusContext):
         if not self.__is_numeric(ctx.term4().type):
@@ -193,24 +203,28 @@ class myListener(pyGramListener):
                 ctx.type = 'float'
             else:
                 ctx.type = 'int'
+        ctx.val = self.jasmin.int_sum(ctx.term4().val, ctx.term5().val)  # TODO : sum para float
 
     def exitE_term5(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term5().type
+        ctx.val = ctx.term5().val
 
     def exitTime_div(self, ctx: pyGramParser.Time_divContext):
         if not self.__is_numeric(ctx.term5().type):
             raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
         if not self.__is_numeric(ctx.term6().type):
             raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
+
+        if ctx.term5().type == 'float' or ctx.term6().type == 'float':
+            ctx.type = 'float'
         else:
-            if self.__is_numeric(ctx.term5().type) and self.__is_numeric(ctx.term6().type):
-                if ctx.term5().type == 'float' or ctx.term6().type == 'float':
-                    ctx.type = 'float'
-                else:
-                    ctx.type = 'int'
+            ctx.type = 'int'
+
+        self.jasmin.int_mul()
 
     def exitE_term6(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term6().type
+        ctx.val = ctx.term6().val
 
     def exitMinus_not(self, ctx: pyGramParser.Minus_notContext):
         if ctx.op.text == '-':  # minus
@@ -226,28 +240,38 @@ class myListener(pyGramListener):
 
     def exitE_factor(self, ctx: pyGramParser.E_factorContext):
         ctx.type = ctx.factor().type
+        ctx.val = ctx.factor().val
 
     def exitL_expr(self, ctx: pyGramParser.L_exprContext):
         ctx.type = ctx.expr().type
+        ctx.val = ctx.expr().val
 
     def exitL_id(self, ctx: pyGramParser.L_idContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
         ctx.type = self.symbol_table[ctx_id].type
+        ctx.val = self.jasmin.load_var(ctx_id)
 
     def exitL_int_value(self, ctx: pyGramParser.L_int_valueContext):
         ctx.type = 'int'
+        ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
 
     def exitL_float_value(self, ctx: pyGramParser.L_float_valueContext):
         ctx.type = 'float'
+        ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
 
     def exitL_str_value(self, ctx: pyGramParser.L_str_valueContext):
         ctx.type = 'string'
+        ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
 
     def exitL_bool_value(self, ctx: pyGramParser.L_bool_valueContext):
         ctx.type = 'boolean'
+        ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
 
     def exitL_function_call(self, ctx: pyGramParser.L_function_callContext):
         ctx.type = ctx.function_call().type
+        # TODO: save result of function
 
+    def exitProg(self, ctx: pyGramParser.ProgContext):
+        self.jasmin.close_file()
