@@ -203,7 +203,7 @@ class myListener(pyGramListener):
                 ctx.type = 'float'
             else:
                 ctx.type = 'int'
-        ctx.val = self.jasmin.int_sum(ctx.term4().val, ctx.term5().val)  # TODO : sum para float
+        ctx.val = self.jasmin.sum(ctx.type, ctx.term4().val, ctx.term5().val)  # TODO : sum para float
 
     def exitE_term5(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term5().type
@@ -220,7 +220,7 @@ class myListener(pyGramListener):
         else:
             ctx.type = 'int'
 
-        self.jasmin.int_mul()
+        ctx.val = self.jasmin.mul(ctx.type, ctx.term5().val, ctx.term6().val)
 
     def exitE_term6(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term6().type

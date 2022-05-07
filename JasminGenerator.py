@@ -97,28 +97,48 @@ class Generator:
             """.format(val, type_convert(type))
         )
 
-    def int_sum(self, add1, add2):
-        self.__write(
-            """
-            iload {}
-            iload {}
-            iadd
-            """.format(add1, add2)
-        )
-        return self.store_val('int')
+    def sum(self, type, add1, add2):
+        self.load_temp(add1, type)
+        self.load_temp(add2, type)
+        if type == 'int':
+            self.__write(
+                """
+                iadd
+                """
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fadd
+                """
+            )
+        # TODO : soma de string
+        return self.store_val(type)
 
-    def int_mul(self):
-        self.__write(
-            """
-            imul
-            """
-        )
+    def mul(self, type, add1, add2):
+        self.load_temp(add1, type)
+        self.load_temp(add2, type)
+        if type == 'int':
+            self.__write(
+                """
+                imul
+                """
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fmul
+                """
+            )
+        # TODO : soma de string
+        return self.store_val(type)
 
     def store_val(self, type):
-        if type == 'str':
+        if type == 'string':
             self.__write(  # TODO : armazenar string
                 """
-                """.format()
+                aastore {}
+                """.format(self.top_index)
             )
         elif type == 'int' or type == 'boolean':
             self.__write(
@@ -126,7 +146,7 @@ class Generator:
                 istore {}
                 """.format(self.top_index)
             )
-        elif type == float:
+        elif type == 'float':
             self.__write(
                 """
                 fstore {}
@@ -138,7 +158,7 @@ class Generator:
     def load_var(self, var):
         var_data = self.symbol_table[var]
         if var_data.local:  # local var
-            if var_data.type == 'integer' or var_data.type == 'boolean':
+            if var_data.type == 'int' or var_data.type == 'boolean':
                 self.__write(
                     """
                      iload {}
@@ -162,28 +182,36 @@ class Generator:
     def store_var(self, var, address):
         var_data = self.symbol_table[var]
         if var_data.local:  # local var
-            if var_data.type == 'integer' or var_data.type == 'boolean':
+            if var_data.type == 'int' or var_data.type == 'boolean':
                 self.__write(
                     """
-                    ldc {}
+                    iload {}
                     istore {}
                     """.format(var_data.address, address)
                 )
             elif var_data.type == 'float':
                 self.__write(
                     """
-                    ldc {}
+                    fload {}
                     fstore {}
                     """.format(var_data.address, address)
                 )
             # TODO: tratar string
         else:  # global var
-            self.__write(
-                """
-                ldc {}
-                putstatic {}/{} {}
-                """.format(address, self.name, var, type_convert(self.symbol_table[var].type))
-            )
+            self.load_temp(address, self.symbol_table[var].type)
+            if var_data.type == 'int' or var_data.type == 'boolean':
+                self.__write(
+                    """
+                    putstatic {}/{} {}
+                    """.format(self.name, var, type_convert(self.symbol_table[var].type))
+                )
+            elif var_data.type == 'float':
+                self.__write(
+                    """
+                    putstatic {}/{} {}
+                    """.format(self.name, var, type_convert(self.symbol_table[var].type))
+                )
+            # TODO: tratar string
 
     def do_int_sum(self):
         self.__write(
@@ -191,6 +219,26 @@ class Generator:
             iadd
             """
         )
+
+    def load_temp(self, val, type):
+        if type == 'int':
+            self.__write(
+                """
+                iload {}
+                """.format(val)
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fload {}
+                """.format(val)
+            )
+        elif type == 'string':
+            self.__write(
+                """
+                aaload {}
+                """.format(val)
+            )
 
     def create_temp(self, val, type):
         self.__write(
