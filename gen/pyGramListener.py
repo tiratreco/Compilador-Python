@@ -1,4 +1,4 @@
-# Generated from C:/Users/gstvu/PycharmProjects/Compilador-Python\pyGram.g4 by ANTLR 4.9.2
+# Generated from C:/Users/gstvu/Documents/Compilador-Python\pyGram.g4 by ANTLR 4.10.1
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .pyGramParser import pyGramParser
@@ -287,6 +287,15 @@ class pyGramListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by pyGramParser#l_function_call.
+    def enterL_function_call(self, ctx:pyGramParser.L_function_callContext):
+        pass
+
+    # Exit a parse tree produced by pyGramParser#l_function_call.
+    def exitL_function_call(self, ctx:pyGramParser.L_function_callContext):
+        pass
+
+
     # Enter a parse tree produced by pyGramParser#l_id.
     def enterL_id(self, ctx:pyGramParser.L_idContext):
         pass
@@ -329,15 +338,6 @@ class pyGramListener(ParseTreeListener):
 
     # Exit a parse tree produced by pyGramParser#l_bool_value.
     def exitL_bool_value(self, ctx:pyGramParser.L_bool_valueContext):
-        pass
-
-
-    # Enter a parse tree produced by pyGramParser#l_function_call.
-    def enterL_function_call(self, ctx:pyGramParser.L_function_callContext):
-        pass
-
-    # Exit a parse tree produced by pyGramParser#l_function_call.
-    def exitL_function_call(self, ctx:pyGramParser.L_function_callContext):
         pass
 
 
