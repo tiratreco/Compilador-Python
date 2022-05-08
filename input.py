@@ -1,5 +1,5 @@
 int numero;
-
 main():
-    print 5*5;
+    numero = 1 + 1;
+    print "teste";
 }

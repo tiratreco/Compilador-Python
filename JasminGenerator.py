@@ -92,9 +92,13 @@ class Generator:
         self.__write(
             """
             getstatic java/lang/System/out Ljava/io/PrintStream;
-            iload {}
+            """
+        )
+        self.load_temp(val, type)
+        self.__write(
+            """
             invokevirtual java/io/PrintStream/println({})V 
-            """.format(val, type_convert(type))
+            """.format(type_convert(type))
         )
 
     def sum(self, type, add1, add2):
@@ -137,7 +141,7 @@ class Generator:
         if type == 'string':
             self.__write(  # TODO : armazenar string
                 """
-                aastore {}
+                astore {}
                 """.format(self.top_index)
             )
         elif type == 'int' or type == 'boolean':
@@ -150,7 +154,7 @@ class Generator:
             self.__write(
                 """
                 fstore {}
-                """.format(type, self.top_index)
+                """.format(self.top_index)
             )
         self.top_index += 1
         return self.top_index - 1
@@ -236,7 +240,7 @@ class Generator:
         elif type == 'string':
             self.__write(
                 """
-                aaload {}
+                aload {}
                 """.format(val)
             )
 
