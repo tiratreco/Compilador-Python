@@ -29,8 +29,10 @@ class myListener(pyGramListener):
         function_id = ctx.ID(0).getText()
         if function_id in self.symbol_table:
             raise AlreadyDeclaredError(ctx.start.line, function_id)
-
+        
         self.symbol_table[function_id] = Id(type=ctx.TYPE(0).getText())
+        if self.symbol_table[function_id].type == 'int':
+            self.symbol_table[function_id].type = 'integer'
 
         args = []
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
@@ -40,7 +42,7 @@ class myListener(pyGramListener):
             args.append(arg_type.getText())
 
         self.functions_args[function_id] = args
-        self.jasmin.enter_function(function_id)
+        self.jasmin.enter_function(function_id, self.functions_args[function_id])
 
     def enterL_void(self, ctx: pyGramParser.L_voidContext):
         self.stack_block.append('function')
@@ -90,6 +92,7 @@ class myListener(pyGramListener):
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         # saindo da função antes de apagar referencias que podem ser importantes
+        # TODO : verificar se existe retorno!!
         self.jasmin.exit_function(ctx.ID()[0])
 
         self.stack_block.pop()

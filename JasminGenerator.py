@@ -9,7 +9,7 @@ class Id:
 def type_convert(type):
     if type == 'string':
         return 'Ljava/lang/String;'
-    elif type == 'int':
+    elif type == 'int' or type == 'integer':
         return 'I'
     elif type == 'float':
         return 'F'
@@ -71,13 +71,18 @@ class Generator:
             """
         )
 
-    def enter_function(self, name):  # TODO: receive parameters
+    def enter_function(self, name, parameters):  # TODO: receive parameters
+        param = ''
+        print (self.symbol_table[name].type)
+        for p in parameters:
+            param += type_convert(p)
+            print (p)
         self.__write(
             """
-            .method public static {}(){}
-           .limit stack 5
-           .limit locals 100
-            """.format(name, type_convert(self.symbol_table[name].type))
+            .method public static {}({}){}
+            .limit stack 5
+            .limit locals 100
+            """.format(name, param, type_convert(self.symbol_table[name].type))
         )
 
     def exit_function(self, name):

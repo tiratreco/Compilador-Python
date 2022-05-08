@@ -24,5 +24,5 @@ if __name__ == '__main__':
     walker.walk(l, tree)
 
     # Autoexecute
-    os.system('java -jar .\jasmin.jar .\{}'.format(fileName + '.j'))
+    os.system('java -jar jasmin.jar {}'.format(fileName + '.j'))
     os.system('java {}'.format(fileName))
