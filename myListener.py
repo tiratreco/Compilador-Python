@@ -147,9 +147,11 @@ class myListener(pyGramListener):
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
-    def exitR_print(self, ctx: pyGramParser.R_printContext):
-        self.jasmin.print(ctx.expr()[0].type, ctx.expr()[0].val)
-        # TODO : tratar varias exprs
+    def exitR_print(self, ctx:pyGramParser.R_printContext):
+        type_val = []
+        for expr in ctx.expr():
+            type_val.append((expr.type, expr.val))
+        self.jasmin.print(type_val)
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.expr().type != 'boolean':

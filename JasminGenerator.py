@@ -88,18 +88,34 @@ class Generator:
             """
         )
 
-    def print(self, type, val):
+    def print(self, type_val):
+        for type, val in type_val:
+            self.__write(
+                """
+                getstatic java/lang/System/out Ljava/io/PrintStream;
+                """
+            )
+            self.load_temp(val, type)
+            self.__write(
+                """
+                invokevirtual java/io/PrintStream/print({})V
+                """.format(type_convert(type))
+            )
+            self.__write(
+                """
+                getstatic java/lang/System/out Ljava/io/PrintStream;
+                ldc " "
+                invokevirtual java/io/PrintStream/print(Ljava/lang/String;)V
+                """
+            )
         self.__write(
             """
             getstatic java/lang/System/out Ljava/io/PrintStream;
+            ldc ""
+            invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
             """
         )
-        self.load_temp(val, type)
-        self.__write(
-            """
-            invokevirtual java/io/PrintStream/println({})V 
-            """.format(type_convert(type))
-        )
+
 
     def sum(self, type, add1, add2):
         self.load_temp(add1, type)
