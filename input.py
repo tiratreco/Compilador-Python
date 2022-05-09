@@ -1,10 +1,7 @@
-int numero;
-
-def int teste():
-    print("Ola");
-    return 5;
-}
+int i;
 
 main():
-    teste();
+    for i in range(4):
+        print "OK";
+    }
 }

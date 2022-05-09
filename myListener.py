@@ -78,6 +78,7 @@ class myListener(pyGramListener):
         if not self.__is_numeric(self.symbol_table[ctx_id].type):
             raise UnexpectedTypeError(ctx.start.line, 'int', self.symbol_table[ctx_id].type)
 
+        ctx.start, ctx.expr()[len(ctx.expr())-1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
         self.stack_block.append('loop')
 
     def enterR_while(self, ctx: pyGramParser.R_whileContext):
@@ -124,6 +125,10 @@ class myListener(pyGramListener):
 
     def exitR_for(self, ctx: pyGramParser.R_forContext):
         self.stack_block.pop()
+        if ctx.start != None:
+            self.jasmin.exit_for(ctx.start, ctx.expr()[0].val)
+        else:
+            self.jasmin.exit_for(ctx.expr()[0].val, ctx.expr()[1].val)
 
     def exitR_while(self, ctx: pyGramParser.R_whileContext):
         if ctx.expr().type != 'boolean':
@@ -171,6 +176,11 @@ class myListener(pyGramListener):
     def exitE_term(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term().type
         ctx.val = ctx.term().val
+
+        try:
+            self.jasmin.write_inh(ctx.inh.format(ctx.val))
+        except:
+            pass
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':

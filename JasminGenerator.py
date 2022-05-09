@@ -36,7 +36,6 @@ class Generator:
             .field public static {} {}
             """.format(var_name, type_convert(var_type))
         )
-        # TODO: salvar outros tipos
 
     def start_file(self):
         self.__write(
@@ -297,3 +296,30 @@ class Generator:
             """
         )
         return self.store_val("float")
+
+    def enter_for(self, temp=False):
+        if temp:
+            self.__write(
+                """
+                ldc 0
+                """
+            )
+            start = self.store_val('int')
+        return start, "for{}:\n"
+
+    def exit_for(self, start, end):
+        self.__write(
+            """
+            iinc {} +1
+            """.format(start)
+        )
+        self.load_temp(start, 'int')
+        self.load_temp(end, 'int')
+        self.__write(
+            """
+            if_icmplt for{}
+            """.format(end)
+        )
+
+    def write_inh(self, line):
+        self.__write(line)

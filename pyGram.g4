@@ -27,7 +27,7 @@ function_call returns [type]: ID OPEN (expr (COMMA expr)*)? CLOSE
 ;
 
 // For each
-r_for: FOR ID IN RANGE OPEN (expr COMMA)? expr CLOSE COLON local BRACKET
+r_for : FOR ID IN RANGE OPEN (expr COMMA)? expr CLOSE COLON local BRACKET
 ;
 
 //while
