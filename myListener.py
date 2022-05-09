@@ -38,7 +38,7 @@ class myListener(pyGramListener):
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
             if arg_id.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, arg_id.getText())
-            self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True)
+            self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True, function=True)
             args.append(arg_type.getText())
 
         self.functions_args[function_id] = args
@@ -60,6 +60,10 @@ class myListener(pyGramListener):
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
         if not self.__is_inside_function():
             raise ReturnException(ctx.start.line)
+
+    def exitR_return(self, ctx:pyGramParser.R_returnContext):
+        # TODO : conferir se o tipo do retorno bate com o da função
+        self.jasmin.do_return(ctx.expr().val, ctx.expr().type)
 
     def enterFunction_call(self, ctx: pyGramParser.Function_callContext):
         ctx_id = ctx.ID().getText()
@@ -93,14 +97,14 @@ class myListener(pyGramListener):
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         # saindo da função antes de apagar referencias que podem ser importantes
         # TODO : verificar se existe retorno!!
-        self.jasmin.exit_function(ctx.ID()[0])
+        self.jasmin.exit_function()
 
         self.stack_block.pop()
         for arg_id in ctx.ID()[1:]:
             del self.symbol_table[arg_id.getText()]
 
     def exitL_void(self, ctx: pyGramParser.L_voidContext):
-        self.jasmin.exit_function(ctx.ID()[0])
+        self.jasmin.exit_function()
         self.stack_block.pop()
 
         for arg_id in ctx.ID()[1:]:

@@ -7,11 +7,12 @@ class Id:
 
 
 def type_convert(type):
-    descriptor = {'int': 'I', 'float': 'F', 'string': 'Ljava/lang/String;', 'boolean': 'I', 'NoneType': 'V'}
+    descriptor = {'int': 'I', 'float': 'F', 'string': 'Ljava/lang/String;', 'boolean': 'I', 'NoneType': 'V',
+                  'integer': 'I'}
     return descriptor[type]
 
+
 class Generator:
-    var_list = []  # index = endereco
 
     def __init__(self, name, symbol_table):
         self.name = name
@@ -64,10 +65,8 @@ class Generator:
 
     def enter_function(self, name, parameters):  # TODO: receive parameters
         param = ''
-        print (self.symbol_table[name].type)
         for p in parameters:
             param += type_convert(p)
-            print (p)
         self.__write(
             """
             .method public static {}({}){}
@@ -76,13 +75,40 @@ class Generator:
             """.format(name, param, type_convert(self.symbol_table[name].type))
         )
 
-    def exit_function(self, name):
+    def exit_function(self):
         self.__write(
             """
-            ireturn
             .end method
             """
         )
+
+    def do_return(self, val, type):
+        self.load_temp(val, type)
+        return_type = type_convert(type)
+        if return_type == 'I':
+            self.__write(
+                """
+                ireturn
+                """
+            )
+        elif return_type == 'F':
+            self.__write(
+                """
+                freturn
+                """
+            )
+        elif return_type == 'V':
+            self.__write(
+                """
+                return
+                """
+            )
+        elif return_type == 'Ljava/lang/String;':
+            self.__write(
+                """
+                areturn
+                """
+            )
 
     def print(self, type_val):
         for type, val in type_val:
@@ -111,7 +137,6 @@ class Generator:
             invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
             """
         )
-
 
     def sum(self, type, add1, add2):
         self.load_temp(add1, type)
