@@ -307,7 +307,7 @@ class Generator:
             start = self.store_val('int')
         return start, "for{}:\n"
 
-    def exit_for(self, start, end):
+    def exit_for(self, start, end, stack_idx):
         self.__write(
             """
             iinc {} +1
@@ -318,7 +318,15 @@ class Generator:
         self.__write(
             """
             if_icmplt for{}
-            """.format(end)
+            continue{}:
+            """.format(end, stack_idx)
+        )
+
+    def break_loop(self, break_point):
+        self.__write(
+            """
+            goto continue{}
+            """.format(break_point)
         )
 
     def write_inh(self, line):

@@ -79,6 +79,8 @@ class myListener(pyGramListener):
             raise UnexpectedTypeError(ctx.start.line, 'int', self.symbol_table[ctx_id].type)
 
         ctx.start, ctx.expr()[len(ctx.expr())-1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
+        ctx.stack_idx = len(self.stack_block)
+
         self.stack_block.append('loop')
 
     def enterR_while(self, ctx: pyGramParser.R_whileContext):
@@ -126,9 +128,9 @@ class myListener(pyGramListener):
     def exitR_for(self, ctx: pyGramParser.R_forContext):
         self.stack_block.pop()
         if ctx.start != None:
-            self.jasmin.exit_for(ctx.start, ctx.expr()[0].val)
+            self.jasmin.exit_for(ctx.start, ctx.expr()[0].val, ctx.stack_idx)
         else:
-            self.jasmin.exit_for(ctx.expr()[0].val, ctx.expr()[1].val)
+            self.jasmin.exit_for(ctx.expr()[0].val, ctx.expr()[1].val, ctx.stack_idx)
 
     def exitR_while(self, ctx: pyGramParser.R_whileContext):
         if ctx.expr().type != 'boolean':
@@ -252,11 +254,6 @@ class myListener(pyGramListener):
         else:
             ctx.type = 'int'
 
-        # if ctx.term5().type == 'float' or ctx.term6().type == 'float':
-        #     ctx.type = 'float'
-        # else:
-        #     ctx.type = 'int'
-
         ctx.val = self.jasmin.mul(ctx.type, val1, val2)
 
     def exitE_term6(self, ctx: pyGramParser.E_termContext):
@@ -312,3 +309,6 @@ class myListener(pyGramListener):
 
     def exitProg(self, ctx: pyGramParser.ProgContext):
         self.jasmin.close_file()
+
+    def exitR_break(self, ctx:pyGramParser.R_breakContext):
+        self.jasmin.break_loop(len(self.stack_block)-1)
