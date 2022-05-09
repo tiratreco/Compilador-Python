@@ -7,17 +7,8 @@ class Id:
 
 
 def type_convert(type):
-    if type == 'string':
-        return 'Ljava/lang/String;'
-    elif type == 'int' or type == 'integer':
-        return 'I'
-    elif type == 'float':
-        return 'F'
-    elif type == 'NoneType':
-        return 'V'
-    else:
-        return None
-
+    descriptor = {'int': 'I', 'float': 'F', 'string': 'Ljava/lang/String;', 'boolean': 'I', 'NoneType': 'V'}
+    return descriptor[type]
 
 class Generator:
     var_list = []  # index = endereco
@@ -38,11 +29,11 @@ class Generator:
             if s.strip():
                 self.file.write(s.strip() + "\n")
 
-    def create_global(self, var_name):
+    def create_global(self, var_name, var_type):
         self.__write(
             """
-            .field public static {} I
-            """.format(var_name)
+            .field public static {} {}
+            """.format(var_name, type_convert(var_type))
         )
         # TODO: salvar outros tipos
 
@@ -272,3 +263,12 @@ class Generator:
             """.format(val)
         )
         return self.store_val(type)
+
+    def int_to_float(self, val):
+        self.load_temp(val, "int")
+        self.__write(
+            """
+            i2f
+            """
+        )
+        return self.store_val("float")

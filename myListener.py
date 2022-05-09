@@ -131,7 +131,7 @@ class myListener(pyGramListener):
             if token.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, token.getText())
             self.symbol_table[token.getText()] = Id(type=ctx.TYPE().getText())
-            self.jasmin.create_global(token.getText())
+            self.jasmin.create_global(token.getText(), ctx.TYPE().getText())
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
         ctx_id = ctx.ID().getText()
@@ -203,12 +203,19 @@ class myListener(pyGramListener):
             raise ExprTypeError(ctx.start.line, ctx.term4().type, ctx.op.text)
         elif not self.__is_numeric(ctx.term5().type):
             raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
+        elif ctx.term4().type == 'float' and ctx.term5().type == 'float':
+            ctx.type = 'float'
+            val1, val2 = ctx.term4().val, ctx.term5().val
+        elif ctx.term4().type == 'float':
+            ctx.type = 'float'
+            val1, val2 = ctx.term4().val, self.jasmin.int_to_float(ctx.term5().val)
+        elif ctx.term5().type == 'float':
+            ctx.type = 'float'
+            val1, val2 = self.jasmin.int_to_float(ctx.term4().val), ctx.term5().val
         else:
-            if ctx.term4().type == 'float' or ctx.term5().type == 'float':
-                ctx.type = 'float'
-            else:
-                ctx.type = 'int'
-        ctx.val = self.jasmin.sum(ctx.type, ctx.term4().val, ctx.term5().val)  # TODO : sum para float
+            ctx.type = 'int'
+
+        ctx.val = self.jasmin.sum(ctx.type, val1, val2)
 
     def exitE_term5(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term5().type
@@ -219,13 +226,24 @@ class myListener(pyGramListener):
             raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
         if not self.__is_numeric(ctx.term6().type):
             raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
-
-        if ctx.term5().type == 'float' or ctx.term6().type == 'float':
+        elif ctx.term5().type == 'float' and ctx.term6().type == 'float':
             ctx.type = 'float'
+            val1, val2 = ctx.term5().val, ctx.term6().val
+        elif ctx.term5().type == 'float':
+            ctx.type = 'float'
+            val1, val2 = ctx.term5().val, self.jasmin.int_to_float(ctx.term6().val)
+        elif ctx.term6().type == 'float':
+            ctx.type = 'float'
+            val1, val2 = self.jasmin.int_to_float(ctx.term5().val), ctx.term6().val
         else:
             ctx.type = 'int'
 
-        ctx.val = self.jasmin.mul(ctx.type, ctx.term5().val, ctx.term6().val)
+        # if ctx.term5().type == 'float' or ctx.term6().type == 'float':
+        #     ctx.type = 'float'
+        # else:
+        #     ctx.type = 'int'
+
+        ctx.val = self.jasmin.mul(ctx.type, val1, val2)
 
     def exitE_term6(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term6().type
