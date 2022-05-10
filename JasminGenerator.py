@@ -66,7 +66,7 @@ class Generator:
     def enter_function(self, name, parameters):  # TODO: receive parameters
         param = ''
         for p in parameters:
-            param += type_convert(p)
+            param += type_convert(self.symbol_table[p].type)
         self.__write(
             """
             .method public static {}({}){}
@@ -156,24 +156,6 @@ class Generator:
             """
         )
 
-    def sum(self, type, add1, add2):
-        self.load_temp(add1, type)
-        self.load_temp(add2, type)
-        if type == 'int':
-            self.__write(
-                """
-                iadd
-                """
-            )
-        elif type == 'float':
-            self.__write(
-                """
-                fadd
-                """
-            )
-        # TODO : soma de string
-        return self.store_val(type)
-
     def mul(self, type, add1, add2):
         self.load_temp(add1, type)
         self.load_temp(add2, type)
@@ -189,7 +171,23 @@ class Generator:
                 fmul
                 """
             )
-        # TODO : soma de string
+        return self.store_val(type)
+
+    def div(self, type, add1, add2):
+        self.load_temp(add1, type)
+        self.load_temp(add2, type)
+        if type == 'int':
+            self.__write(
+                """
+                idiv
+                """
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fdiv
+                """
+            )
         return self.store_val(type)
 
     def store_val(self, type):
@@ -272,12 +270,40 @@ class Generator:
                 )
             # TODO: tratar string
 
-    def do_int_sum(self):
-        self.__write(
-            """
-            iadd
-            """
-        )
+    def add(self, type, add1, add2):
+        self.load_temp(add1, type)
+        self.load_temp(add2, type)
+        if type == 'int':
+            self.__write(
+                """
+                iadd
+                """
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fadd
+                """
+            )
+        # TODO : soma de string
+        return self.store_val(type)
+
+    def sub(self, type, add1, add2):
+        self.load_temp(add1, type)
+        self.load_temp(add2, type)
+        if type == 'int':
+            self.__write(
+                """
+                isub
+                """
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                fsub
+                """
+            )
+        return self.store_val(type)
 
     def load_temp(self, val, type):
         if type == 'int' or type == 'integer':

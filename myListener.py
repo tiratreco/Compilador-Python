@@ -35,14 +35,16 @@ class myListener(pyGramListener):
             self.symbol_table[function_id].type = 'integer'
 
         args = []
+        args_names = []
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
             if arg_id.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, arg_id.getText())
             self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True, function=True)
             args.append(arg_type.getText())
+            args_names.append(arg_id.getText())
 
         self.functions_args[function_id] = args
-        self.jasmin.enter_function(function_id, self.functions_args[function_id])
+        self.jasmin.enter_function(function_id, args_names)
 
     def enterL_void(self, ctx: pyGramParser.L_voidContext):
         self.stack_block.append('function')
@@ -232,8 +234,12 @@ class myListener(pyGramListener):
             val1, val2 = self.jasmin.int_to_float(ctx.term4().val), ctx.term5().val
         else:
             ctx.type = 'int'
+            val1, val2 = ctx.term4().val, ctx.term5().val
 
-        ctx.val = self.jasmin.sum(ctx.type, val1, val2)
+        if ctx.op.text == '+':
+            ctx.val = self.jasmin.add(ctx.type, val1, val2)
+        else:
+            ctx.val = self.jasmin.sub(ctx.type, val1, val2)
 
     def exitE_term5(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term5().type
@@ -255,8 +261,12 @@ class myListener(pyGramListener):
             val1, val2 = self.jasmin.int_to_float(ctx.term5().val), ctx.term6().val
         else:
             ctx.type = 'int'
+            val1, val2 = ctx.term5().val, ctx.term6().val
 
-        ctx.val = self.jasmin.mul(ctx.type, val1, val2)
+        if ctx.op.text == '*':
+            ctx.val = self.jasmin.mul(ctx.type, val1, val2)
+        else:
+            ctx.val = self.jasmin.div(ctx.type, val1, val2)
 
     def exitE_term6(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term6().type

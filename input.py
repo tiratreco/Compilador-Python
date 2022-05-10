@@ -1,10 +1,10 @@
-int cinco;
+int num;
 
-def int numeroCinco ():
-    return 5;
+def int devolveInteiro (int entrada):
+    return entrada;
 }
 
 main():
-    cinco = numeroCinco();
-    print (cinco);
+    num = devolveInteiro(6-6);
+    print (num);
 }
