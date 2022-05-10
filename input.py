@@ -1,10 +1,11 @@
-int num;
+int num, pow;
 
-def int devolveInteiro (int entrada):
-    return entrada;
+def int mult(int num1,int num2):
+    return num1*num2;
 }
 
 main():
-    num = devolveInteiro(6-6);
-    print (num);
+    num = 5*5-3;
+    pow = mult(num, 5);
+    print pow;
 }

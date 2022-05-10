@@ -74,10 +74,10 @@ class Generator:
             .limit locals {}
             """.format(name, param, type_convert(self.symbol_table[name].type), self.MAX_LOCALS)
         )
-        for idx, p in enumerate(parameters):
-            self.load_temp(idx, self.symbol_table[p].type)
-            self.symbol_table[p].address = idx
+        for p in parameters:
+            self.symbol_table[p].address = self.top_index
             self.symbol_table[p].local = True
+            self.top_index += 1
 
     def exit_function(self):
         self.__write(
@@ -159,7 +159,7 @@ class Generator:
     def mul(self, type, add1, add2):
         self.load_temp(add1, type)
         self.load_temp(add2, type)
-        if type == 'int':
+        if type == 'int' or type == 'integer':
             self.__write(
                 """
                 imul
@@ -192,7 +192,7 @@ class Generator:
 
     def store_val(self, type):
         if type == 'string':
-            self.__write(  # TODO : armazenar string
+            self.__write(
                 """
                 astore {}
                 """.format(self.top_index)
@@ -256,19 +256,11 @@ class Generator:
             # TODO: tratar string
         else:  # global var
             self.load_temp(address, self.symbol_table[var].type)
-            if var_data.type == 'int' or var_data.type == 'boolean' or var_data.type == 'integer':
-                self.__write(
-                    """
-                    putstatic {}/{} {}
-                    """.format(self.name, var, type_convert(self.symbol_table[var].type))
-                )
-            elif var_data.type == 'float':
-                self.__write(
-                    """
-                    putstatic {}/{} {}
-                    """.format(self.name, var, type_convert(self.symbol_table[var].type))
-                )
-            # TODO: tratar string
+            self.__write(
+                """
+                putstatic {}/{} {}
+                """.format(self.name, var, type_convert(self.symbol_table[var].type))
+            )
 
     def add(self, type, add1, add2):
         self.load_temp(add1, type)

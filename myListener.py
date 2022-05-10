@@ -105,8 +105,8 @@ class myListener(pyGramListener):
         self.jasmin.exit_function()
 
         self.stack_block.pop()
-        for arg_id in ctx.ID()[1:]:
-            del self.symbol_table[arg_id.getText()]
+        # for arg_id in ctx.ID()[1:]:
+        #     del self.symbol_table[arg_id.getText()]
 
     def exitL_void(self, ctx: pyGramParser.L_voidContext):
         self.jasmin.exit_function()
@@ -155,6 +155,8 @@ class myListener(pyGramListener):
 
         expected = self.symbol_table[ctx_id].type
         recieved = ctx.expr().type
+        if recieved == 'int':
+            recieved = 'integer'
         if expected != recieved:
             raise UnexpectedTypeError(ctx.start.line, expected, recieved)
 
