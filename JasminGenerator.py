@@ -13,6 +13,7 @@ def type_convert(type):
 
 
 class Generator:
+    MAX_LOCALS = 100
 
     def __init__(self, name, symbol_table):
         self.name = name
@@ -50,8 +51,8 @@ class Generator:
             """
             .method public static main([Ljava/lang/String;)V
             .limit stack 10
-            .limit locals 100
-            """
+            .limit locals {}
+            """.format(self.MAX_LOCALS)
         )
 
     def exit_main(self):
@@ -70,9 +71,13 @@ class Generator:
             """
             .method public static {}({}){}
             .limit stack 5
-            .limit locals 100
-            """.format(name, param, type_convert(self.symbol_table[name].type))
+            .limit locals {}
+            """.format(name, param, type_convert(self.symbol_table[name].type), self.MAX_LOCALS)
         )
+        for idx, p in enumerate(parameters):
+            self.load_temp(idx, self.symbol_table[p].type)
+            self.symbol_table[p].address = idx
+            self.symbol_table[p].local = True
 
     def exit_function(self):
         self.__write(
@@ -80,6 +85,20 @@ class Generator:
             .end method
             """
         )
+
+    def function_call(self, func_name, params, types):
+        func_type = self.symbol_table[func_name].type
+        args = ''
+        for p, t in zip(params, types):
+            self.load_temp(p, t)
+            args += type_convert(t)
+        self.__write(
+            """
+            invokestatic {}.{}({}){}
+            """.format(self.name, func_name, args, type_convert(func_type))
+        )
+        return self.store_val(func_type)
+
 
     def do_return(self, val, type):
         self.load_temp(val, type)
@@ -180,7 +199,7 @@ class Generator:
                 astore {}
                 """.format(self.top_index)
             )
-        elif type == 'int' or type == 'boolean':
+        elif type == 'int' or type == 'boolean' or type == 'integer':
             self.__write(
                 """
                 istore {}
@@ -239,7 +258,7 @@ class Generator:
             # TODO: tratar string
         else:  # global var
             self.load_temp(address, self.symbol_table[var].type)
-            if var_data.type == 'int' or var_data.type == 'boolean':
+            if var_data.type == 'int' or var_data.type == 'boolean' or var_data.type == 'integer':
                 self.__write(
                     """
                     putstatic {}/{} {}
@@ -261,7 +280,7 @@ class Generator:
         )
 
     def load_temp(self, val, type):
-        if type == 'int':
+        if type == 'int' or type == 'integer':
             self.__write(
                 """
                 iload {}

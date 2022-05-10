@@ -1,11 +1,10 @@
-int i;
-int j;
+int cinco;
+
+def int numeroCinco ():
+    return 5;
+}
 
 main():
-    for i in range(4):
-        print 1;
-        for j in range(4):
-            print 2;
-        }
-    }
+    cinco = numeroCinco();
+    print (cinco);
 }

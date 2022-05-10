@@ -29,7 +29,7 @@ class myListener(pyGramListener):
         function_id = ctx.ID(0).getText()
         if function_id in self.symbol_table:
             raise AlreadyDeclaredError(ctx.start.line, function_id)
-        
+
         self.symbol_table[function_id] = Id(type=ctx.TYPE(0).getText())
         if self.symbol_table[function_id].type == 'int':
             self.symbol_table[function_id].type = 'integer'
@@ -61,7 +61,7 @@ class myListener(pyGramListener):
         if not self.__is_inside_function():
             raise ReturnException(ctx.start.line)
 
-    def exitR_return(self, ctx:pyGramParser.R_returnContext):
+    def exitR_return(self, ctx: pyGramParser.R_returnContext):
         # TODO : conferir se o tipo do retorno bate com o da função
         self.jasmin.do_return(ctx.expr().val, ctx.expr().type)
 
@@ -78,7 +78,7 @@ class myListener(pyGramListener):
         if not self.__is_numeric(self.symbol_table[ctx_id].type):
             raise UnexpectedTypeError(ctx.start.line, 'int', self.symbol_table[ctx_id].type)
 
-        ctx.start, ctx.expr()[len(ctx.expr())-1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
+        ctx.start, ctx.expr()[len(ctx.expr()) - 1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
         ctx.stack_idx = len(self.stack_block)
 
         self.stack_block.append('loop')
@@ -142,6 +142,8 @@ class myListener(pyGramListener):
             if token.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, token.getText())
             self.symbol_table[token.getText()] = Id(type=ctx.TYPE().getText())
+            if self.symbol_table[token.getText()].type == 'int':
+                self.symbol_table[token.getText()].type = 'integer'
             self.jasmin.create_global(token.getText(), ctx.TYPE().getText())
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
@@ -161,7 +163,7 @@ class myListener(pyGramListener):
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
 
-    def exitR_print(self, ctx:pyGramParser.R_printContext):
+    def exitR_print(self, ctx: pyGramParser.R_printContext):
         type_val = []
         for expr in ctx.expr():
             type_val.append((expr.type, expr.val))
@@ -303,12 +305,21 @@ class myListener(pyGramListener):
         ctx.type = 'boolean'
         ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
 
+    def exitFunction_call(self, ctx: pyGramParser.L_function_callContext):
+        ctx.type = self.symbol_table[ctx.ID().getText()].type
+        args = []
+        types = []
+        for exp in ctx.expr():
+            args.append(exp.val)
+            types.append(exp.type)
+        ctx.val = self.jasmin.function_call(ctx.ID().getText(), args, types)
+
     def exitL_function_call(self, ctx: pyGramParser.L_function_callContext):
         ctx.type = ctx.function_call().type
-        # TODO: save result of function
+        ctx.val = ctx.function_call().val
 
     def exitProg(self, ctx: pyGramParser.ProgContext):
         self.jasmin.close_file()
 
-    def exitR_break(self, ctx:pyGramParser.R_breakContext):
-        self.jasmin.break_loop(len(self.stack_block)-1)
+    def exitR_break(self, ctx: pyGramParser.R_breakContext):
+        self.jasmin.break_loop(len(self.stack_block) - 1)
