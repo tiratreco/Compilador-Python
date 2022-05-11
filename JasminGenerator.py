@@ -219,6 +219,39 @@ class Generator:
         )
         return self.store_val('boolean')
 
+    def calc_eq(self, type, val1, val2, label_id, op):
+        cmp = {'==': 'eq', '!=': 'ne', '>=': 'ge', '>': 'gt', '<=': 'le', 'lt': '<'}
+        self.load_temp(val1, type)
+        self.load_temp(val2, type)
+        if type in ['int', 'integer', 'boolean']:
+            self.__write(
+                """
+                if_icmp{} true{}
+                """.format(cmp[op], label_id)
+            )
+        elif type == 'float':
+            self.__write(
+                """
+                if{} true{}
+                """.format(cmp[op], label_id)
+            )
+        else:
+            self.__write(
+                """
+                if_acmp{} true{}
+                """.format(cmp[op], label_id)
+            )
+        self.__write(
+            """
+            ldc 0
+            goto cmp_end{}
+            true{}:
+            ldc 1
+            cmp_end{}:
+            """.format(label_id, label_id, label_id, label_id)
+        )
+        return self.store_val('boolean')
+
     def store_val(self, type):
         if type == 'string':
             self.__write(

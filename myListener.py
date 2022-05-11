@@ -14,6 +14,7 @@ class myListener(pyGramListener):
 
     def __init__(self, filename):
         self.jasmin = Generator(filename, self.symbol_table)
+        self.label_id = 0
 
     def __is_numeric(self, type):
         return (type == 'float') or (type == 'int')
@@ -212,6 +213,8 @@ class myListener(pyGramListener):
         if ctx.term2().type != ctx.term3().type:
             raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term2().type, ctx.term3().type)
         ctx.type = 'boolean'
+        ctx.val = self.jasmin.calc_eq(ctx.term2().type, ctx.term2().val, ctx.term3().val, self.label_id, ctx.op.text)
+        self.label_id+=1
 
     def exitE_term3(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term3().type
@@ -221,6 +224,8 @@ class myListener(pyGramListener):
         if ctx.term3().type != ctx.term4().type:
             raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term3().type, ctx.term4().type)
         ctx.type = 'boolean'
+        ctx.val = self.jasmin.calc_eq(ctx.term3().type, ctx.term3().val, ctx.term4().val, self.label_id, ctx.op.text)
+        self.label_id+=1
 
     def exitE_term4(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term4().type
