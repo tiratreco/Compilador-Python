@@ -352,7 +352,7 @@ class Generator:
                 invokevirtual java/util/Scanner/nextFloat()F
                 """.format(type_convert(self.symbol_table[name].type))
             )
-        elif t == 'bool':
+        elif t == 'boolean':
             self.__write(
                 """
                 invokevirtual java/util/Scanner/nextBoolean()Z
