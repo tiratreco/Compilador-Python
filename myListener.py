@@ -161,11 +161,13 @@ class myListener(pyGramListener):
             raise UnexpectedTypeError(ctx.start.line, expected, recieved)
 
         self.jasmin.store_var(ctx_id, ctx.expr().val)
-
+    
     def exitInput(self, ctx: pyGramParser.InputContext):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
+
+        self.jasmin.input(ctx_id)
 
     def exitR_print(self, ctx: pyGramParser.R_printContext):
         type_val = []

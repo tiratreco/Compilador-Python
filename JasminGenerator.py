@@ -99,7 +99,6 @@ class Generator:
         )
         return self.store_val(func_type)
 
-
     def do_return(self, val, type):
         self.load_temp(val, type)
         return_type = type_convert(type)
@@ -261,6 +260,27 @@ class Generator:
                 putstatic {}/{} {}
                 """.format(self.name, var, type_convert(self.symbol_table[var].type))
             )
+
+    def input(self, name):
+        if self.symbol_table[name].type == 'string':
+            self.__write(
+                """
+                new java/util/Scanner
+                dup
+                getstatic java/lang/System/in Ljava/io/InputStream;
+                invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V
+                invokevirtual java/util/Scanner/nextLine()Ljava/lang/String;
+                """
+            )
+        else:
+            self.__write(
+                """
+                getstatic java/lang/System/in Ljava/io/InputStream;
+                invokevirtual java/io/InputStream/read(){}
+                """.format(type_convert(self.symbol_table[name].type))
+            )
+        addr = self.store_val(self.symbol_table[name].type)
+        self.store_var(name, addr)
 
     def add(self, type, add1, add2):
         self.load_temp(add1, type)
