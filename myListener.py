@@ -175,11 +175,13 @@ class myListener(pyGramListener):
 
     def exitOr_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.expr().type != 'boolean':
-            raise ExprTypeError(ctx.start.line, ctx.expr().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.expr().type)
         elif ctx.term().type != 'boolean':
-            raise ExprTypeError(ctx.start.line, ctx.term().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term().type)
         else:
             ctx.type = 'boolean'
+
+        ctx.val = self.jasmin.calc_or(ctx.expr().val, ctx.term().val)
 
     def exitE_term(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term().type
@@ -192,11 +194,13 @@ class myListener(pyGramListener):
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':
-            raise ExprTypeError(ctx.start.line, ctx.term().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term().type)
         elif ctx.term2().type != 'boolean':
-            raise ExprTypeError(ctx.start.line, ctx.term2().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term2().type)
         else:
             ctx.type = 'boolean'
+
+        ctx.val = self.jasmin.calc_and(ctx.term().val, ctx.term2().val)
 
     def exitE_term2(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term2().type
@@ -204,7 +208,7 @@ class myListener(pyGramListener):
 
     def exitComp_logic(self, ctx: pyGramParser.Comp_logicContext):
         if ctx.term2().type != ctx.term3().type:
-            raise ExprTypeError(ctx.start.line, ctx.term2().type, ctx.term3().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term2().type, ctx.term3().type)
         ctx.type = 'boolean'
 
     def exitE_term3(self, ctx: pyGramParser.E_termContext):
@@ -213,7 +217,7 @@ class myListener(pyGramListener):
 
     def exitEq_logic(self, ctx: pyGramParser.Eq_logicContext):
         if ctx.term3().type != ctx.term4().type:
-            raise ExprTypeError(ctx.start.line, ctx.term3().type, ctx.term4().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term3().type, ctx.term4().type)
         ctx.type = 'boolean'
 
     def exitE_term4(self, ctx: pyGramParser.E_termContext):
@@ -222,9 +226,9 @@ class myListener(pyGramListener):
 
     def exitSum_minus(self, ctx: pyGramParser.Sum_minusContext):
         if not self.__is_numeric(ctx.term4().type):
-            raise ExprTypeError(ctx.start.line, ctx.term4().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term4().type)
         elif not self.__is_numeric(ctx.term5().type):
-            raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term5().type)
         elif ctx.term4().type == 'float' and ctx.term5().type == 'float':
             ctx.type = 'float'
             val1, val2 = ctx.term4().val, ctx.term5().val
@@ -249,9 +253,9 @@ class myListener(pyGramListener):
 
     def exitTime_div(self, ctx: pyGramParser.Time_divContext):
         if not self.__is_numeric(ctx.term5().type):
-            raise ExprTypeError(ctx.start.line, ctx.term5().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term5().type)
         if not self.__is_numeric(ctx.term6().type):
-            raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
+            raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term6().type)
         elif ctx.term5().type == 'float' and ctx.term6().type == 'float':
             ctx.type = 'float'
             val1, val2 = ctx.term5().val, ctx.term6().val
@@ -279,12 +283,14 @@ class myListener(pyGramListener):
             if self.__is_numeric(ctx.term6().type):
                 ctx.type = ctx.term6().type
             else:
-                raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
+                raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term6().type)
         elif ctx.op.text == 'not':  # not
             if ctx.term6().type == 'boolean':
                 ctx.type = 'boolean'
             else:
-                raise ExprTypeError(ctx.start.line, ctx.term6().type, ctx.op.text)
+                raise ExprTypeError(ctx.start.line, ctx.op.text, ctx.term6().type)
+
+            ctx.val = self.jasmin.calc_not(ctx.term6().val)
 
     def exitE_factor(self, ctx: pyGramParser.E_factorContext):
         ctx.type = ctx.factor().type
@@ -315,7 +321,7 @@ class myListener(pyGramListener):
 
     def exitL_bool_value(self, ctx: pyGramParser.L_bool_valueContext):
         ctx.type = 'boolean'
-        ctx.val = self.jasmin.create_temp(ctx.getText(), ctx.type)
+        ctx.val = self.jasmin.create_temp(0 if ctx.getText() == 'False' else 1, ctx.type)
 
     def exitFunction_call(self, ctx: pyGramParser.L_function_callContext):
         ctx.type = self.symbol_table[ctx.ID().getText()].type
