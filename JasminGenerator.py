@@ -292,21 +292,37 @@ class Generator:
             )
 
     def input(self, name):
-        if self.symbol_table[name].type == 'string':
+        t = self.symbol_table[name].type
+        self.__write(
+            """
+            new java/util/Scanner
+            dup
+            getstatic java/lang/System/in Ljava/io/InputStream;
+            invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V
+            """
+        )
+        if t == 'string':
             self.__write(
                 """
-                new java/util/Scanner
-                dup
-                getstatic java/lang/System/in Ljava/io/InputStream;
-                invokespecial java/util/Scanner/<init>(Ljava/io/InputStream;)V
                 invokevirtual java/util/Scanner/nextLine()Ljava/lang/String;
                 """
             )
-        else:
+        elif t == 'int' or t == 'integer':
             self.__write(
                 """
-                getstatic java/lang/System/in Ljava/io/InputStream;
-                invokevirtual java/io/InputStream/read(){}
+                invokevirtual java/util/Scanner/nextInt()I
+                """.format(type_convert(self.symbol_table[name].type))
+            )
+        elif t == 'float':
+            self.__write(
+                """
+                invokevirtual java/util/Scanner/nextFloat()F
+                """.format(type_convert(self.symbol_table[name].type))
+            )
+        elif t == 'bool':
+            self.__write(
+                """
+                invokevirtual java/util/Scanner/nextBoolean()Z
                 """.format(type_convert(self.symbol_table[name].type))
             )
         addr = self.store_val(self.symbol_table[name].type)

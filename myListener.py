@@ -16,7 +16,7 @@ class myListener(pyGramListener):
         self.jasmin = Generator(filename, self.symbol_table)
 
     def __is_numeric(self, type):
-        return (type == 'float') or (type == 'int')
+        return (type == 'float') or (type == 'int') or (type == 'integer')
 
     def __is_inside_function(self):
         return 'function' in self.stack_block
@@ -129,7 +129,7 @@ class myListener(pyGramListener):
 
     def exitR_for(self, ctx: pyGramParser.R_forContext):
         self.stack_block.pop()
-        if ctx.start != None:
+        if ctx.start is not None:
             self.jasmin.exit_for(ctx.start, ctx.expr()[0].val, ctx.stack_idx)
         else:
             self.jasmin.exit_for(ctx.expr()[0].val, ctx.expr()[1].val, ctx.stack_idx)

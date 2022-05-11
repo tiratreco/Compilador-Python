@@ -1,10 +1,10 @@
-boolean val;
+int count, lim;
 
-def int mult(int num1,int num2):
-    return num1*num2;
-}
 
 main():
-    val = True;
-    print not True;
+    lim = input();
+    print lim;
+    for count in range(lim):
+        print count;
+    }
 }
