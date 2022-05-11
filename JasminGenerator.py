@@ -7,7 +7,7 @@ class Id:
 
 
 def type_convert(type):
-    descriptor = {'int': 'I', 'float': 'F', 'string': 'Ljava/lang/String;', 'boolean': 'I', 'NoneType': 'V',
+    descriptor = {'int': 'I', 'float': 'F', 'string': 'Ljava/lang/String;', 'boolean': 'Z', 'NoneType': 'V',
                   'integer': 'I'}
     return descriptor[type]
 
@@ -189,6 +189,36 @@ class Generator:
             )
         return self.store_val(type)
 
+    def calc_not(self, val):
+        self.load_temp(val, 'boolean')
+        self.__write(
+            """
+            ldc 1
+            ixor
+            """
+        )
+        return self.store_val('boolean')
+
+    def calc_and(self, val1, val2):
+        self.load_temp(val1, 'boolean')
+        self.load_temp(val2, 'boolean')
+        self.__write(
+            """
+            iand
+            """
+        )
+        return self.store_val('boolean')
+
+    def calc_or(self, val1, val2):
+        self.load_temp(val1, 'boolean')
+        self.load_temp(val2, 'boolean')
+        self.__write(
+            """
+            ior
+            """
+        )
+        return self.store_val('boolean')
+
     def store_val(self, type):
         if type == 'string':
             self.__write(
@@ -318,7 +348,7 @@ class Generator:
         return self.store_val(type)
 
     def load_temp(self, val, type):
-        if type == 'int' or type == 'integer':
+        if type == 'int' or type == 'integer' or type == 'boolean':
             self.__write(
                 """
                 iload {}

@@ -1,10 +1,6 @@
 class ExprTypeError(Exception):
-    def __init__(self, line, type1, operation):
-        message = 'Linha {}: Operação {} não suportada para o tipo: {}'.format(line, operation, type1)
-        super().__init__(message)
-
-    def __init__(self, line, type1, type2, operation):
-        message = 'Linha {}: Operação {} não suportada para os tipos: {} e {}'.format(line, operation, type1, type2)
+    def __init__(self, line, operation, type1, type2=None):
+        message = 'Linha {}: Operação {} não suportada para os tipos: {} e {}'.format(line, operation, type1, type2) if type2 else 'Linha {}: Operação {} não suportada para o tipo: {}'.format(line, operation, type1)
         super().__init__(message)
 
 
