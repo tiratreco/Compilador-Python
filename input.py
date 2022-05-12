@@ -1,12 +1,6 @@
-int count, lim;
-boolean teste;
-
+int count;
 main():
-    teste = input();
-    lim = input();
-    print lim;
-    for count in range(lim):
+    for count in range(5, 4):
         print count;
     }
-    print not teste;
 }

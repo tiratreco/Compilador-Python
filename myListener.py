@@ -81,7 +81,15 @@ class myListener(pyGramListener):
         if not self.__is_numeric(self.symbol_table[ctx_id].type):
             raise UnexpectedTypeError(ctx.start.line, 'int', self.symbol_table[ctx_id].type)
 
-        ctx.start, ctx.expr()[len(ctx.expr()) - 1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
+        # ctx.expr()[len(ctx.expr()) - 1].inh = self.jasmin.enter_for(len(ctx.expr()) == 1)
+        if len(ctx.expr()) == 1:
+            ctx.expr()[0].inh_type = 'right_range'
+            ctx.expr()[0].inh = self.jasmin.enter_for(len(self.stack_block), True, ctx_id)
+        else:
+            ctx.expr()[0].inh_type = 'left_range'
+            ctx.expr()[1].inh_type = 'right_range'
+            ctx.expr()[0].inh = ctx_id
+            ctx.expr()[1].inh = self.jasmin.enter_for(len(self.stack_block), False, ctx_id)
         ctx.stack_idx = len(self.stack_block)
 
         self.stack_block.append('loop')
@@ -130,10 +138,12 @@ class myListener(pyGramListener):
 
     def exitR_for(self, ctx: pyGramParser.R_forContext):
         self.stack_block.pop()
-        if ctx.start is not None:
-            self.jasmin.exit_for(ctx.start, ctx.expr()[0].val, ctx.stack_idx)
+
+        ctx_id = ctx.ID().getText()
+        if len(ctx.expr()) == 1:
+            self.jasmin.exit_for(ctx_id, ctx.expr()[0].val, ctx.stack_idx)
         else:
-            self.jasmin.exit_for(ctx.expr()[0].val, ctx.expr()[1].val, ctx.stack_idx)
+            self.jasmin.exit_for(ctx_id, ctx.expr()[1].val, ctx.stack_idx)
 
     def exitR_while(self, ctx: pyGramParser.R_whileContext):
         if ctx.expr().type != 'boolean':
@@ -190,10 +200,10 @@ class myListener(pyGramListener):
         ctx.type = ctx.term().type
         ctx.val = ctx.term().val
 
-        try:
-            self.jasmin.write_inh(ctx.inh.format(ctx.val))
-        except:
-            pass
+        if ctx.inh_type == 'left_range':
+            self.jasmin.store_var(ctx.inh, ctx.val)
+        elif ctx.inh_type == 'right_range':
+            self.jasmin.write_inh(ctx.inh)
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':

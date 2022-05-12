@@ -27,7 +27,7 @@ function_call returns [type]: ID OPEN (expr (COMMA expr)*)? CLOSE
 ;
 
 // For each
-r_for : FOR ID IN RANGE OPEN (expr COMMA)? expr CLOSE COLON local BRACKET
+r_for returns [idx] : FOR ID IN RANGE OPEN (expr COMMA)? expr CLOSE COLON local BRACKET
 ;
 
 //while
@@ -55,7 +55,7 @@ assigment: ID ASSIGNMENT expr SEMI_COLON #e_assigment
 ;
 
 
-expr returns [type]
+expr returns [type, inh_type]
     : expr OR term #or_logic
     | term #e_term
     ;

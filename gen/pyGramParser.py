@@ -981,6 +981,7 @@ class pyGramParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
+            self.idx = None
 
         def FOR(self):
             return self.getToken(pyGramParser.FOR, 0)
@@ -1667,6 +1668,7 @@ class pyGramParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
             self.type = None
+            self.inh_type = None
 
 
         def getRuleIndex(self):
@@ -1676,6 +1678,7 @@ class pyGramParser ( Parser ):
         def copyFrom(self, ctx:ParserRuleContext):
             super().copyFrom(ctx)
             self.type = ctx.type
+            self.inh_type = ctx.inh_type
 
 
     class Or_logicContext(ExprContext):

@@ -433,29 +433,45 @@ class Generator:
         )
         return self.store_val("float")
 
-    def enter_for(self, temp=False):
-        if temp:
+    def enter_for(self, loop_idx, one_expr, id):
+        if one_expr:
+            self.__write(
+            """
+            ldc 0
+            """
+            )
             self.__write(
                 """
-                ldc 0
-                """
+                putstatic {}/{} {}
+                """.format(self.name, id, type_convert(self.symbol_table[id].type))
             )
-            start = self.store_val('int')
-        return start, "for{}:\n"
+            return "for{}:\n goto test_for{}\n enter_for{}:\n".format(loop_idx, loop_idx, loop_idx)
+        else:
+            return "for{}:\n goto test_for{}\n enter_for{}:\n".format(loop_idx, loop_idx, loop_idx)
 
-    def exit_for(self, start, end, stack_idx):
+    def exit_for(self, id, end, loop_idx):
+        val = self.load_var(id)
         self.__write(
             """
             iinc {} +1
-            """.format(start)
+            """.format(val)
         )
-        self.load_temp(start, 'int')
+        self.store_var(id, val)
+        self.__write(
+            """
+            goto for{}
+            test_for{}:
+            """.format(loop_idx, loop_idx)
+        )
+        val = self.load_var(id)
+        self.load_temp(val, 'int')
         self.load_temp(end, 'int')
         self.__write(
             """
-            if_icmplt for{}
+            if_icmpge continue{}
+            goto enter_for{}
             continue{}:
-            """.format(end, stack_idx)
+            """.format(loop_idx, loop_idx, loop_idx)
         )
 
     def break_loop(self, break_point):
