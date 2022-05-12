@@ -32,8 +32,8 @@ class myListener(pyGramListener):
             raise AlreadyDeclaredError(ctx.start.line, function_id)
 
         self.symbol_table[function_id] = Id(type=ctx.TYPE(0).getText())
-        if self.symbol_table[function_id].type == 'int':
-            self.symbol_table[function_id].type = 'integer'
+        # if self.symbol_table[function_id].type == 'int':
+        #     self.symbol_table[function_id].type = 'integer'
 
         args = []
         args_names = []
@@ -95,6 +95,8 @@ class myListener(pyGramListener):
         self.stack_block.append('loop')
 
     def enterR_while(self, ctx: pyGramParser.R_whileContext):
+        ctx.expr().inh_type = 'while'
+        ctx.expr().inh = self.jasmin.enter_while(len(self.stack_block))
         self.stack_block.append('loop')
 
     def enterR_break(self, ctx: pyGramParser.R_breakContext):
@@ -149,14 +151,15 @@ class myListener(pyGramListener):
         if ctx.expr().type != 'boolean':
             raise UnexpectedTypeError(ctx.start.line, 'boolean', ctx.expr().type)
         self.stack_block.pop()
+        self.jasmin.exit_while(len(self.stack_block))
 
     def exitDeclaration(self, ctx: pyGramParser.DeclarationContext):
         for token in ctx.ID():
             if token.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, token.getText())
             self.symbol_table[token.getText()] = Id(type=ctx.TYPE().getText())
-            if self.symbol_table[token.getText()].type == 'int':
-                self.symbol_table[token.getText()].type = 'integer'
+            # if self.symbol_table[token.getText()].type == 'int':
+            #     self.symbol_table[token.getText()].type = 'integer'
             self.jasmin.create_global(token.getText(), ctx.TYPE().getText())
 
     def exitE_assigment(self, ctx: pyGramParser.E_assigmentContext):
@@ -166,8 +169,8 @@ class myListener(pyGramListener):
 
         expected = self.symbol_table[ctx_id].type
         recieved = ctx.expr().type
-        if recieved == 'int':
-            recieved = 'integer'
+        # if recieved == 'int':
+        #     recieved = 'integer'
         if expected != recieved:
             raise UnexpectedTypeError(ctx.start.line, expected, recieved)
 
@@ -196,6 +199,9 @@ class myListener(pyGramListener):
 
         ctx.val = self.jasmin.calc_or(ctx.expr().val, ctx.term().val)
 
+        if ctx.inh_type == 'while':
+            self.jasmin.write_inh(ctx.inh.format(ctx.val))
+
     def exitE_term(self, ctx: pyGramParser.E_termContext):
         ctx.type = ctx.term().type
         ctx.val = ctx.term().val
@@ -204,6 +210,8 @@ class myListener(pyGramListener):
             self.jasmin.store_var(ctx.inh, ctx.val)
         elif ctx.inh_type == 'right_range':
             self.jasmin.write_inh(ctx.inh)
+        elif ctx.inh_type == 'while':
+            self.jasmin.write_inh(ctx.inh.format(ctx.val))
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':

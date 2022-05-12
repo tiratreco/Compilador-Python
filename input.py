@@ -1,6 +1,9 @@
-int count;
+int a;
 main():
-    for count in range(5, 4):
-        print count;
+    a = 0;
+    while a < 4 or False:
+        print a;
+        a = a + 1;
+        break;
     }
 }

@@ -220,7 +220,7 @@ class Generator:
         return self.store_val('boolean')
 
     def calc_eq(self, type, val1, val2, label_id, op):
-        cmp = {'==': 'eq', '!=': 'ne', '>=': 'ge', '>': 'gt', '<=': 'le', 'lt': '<'}
+        cmp = {'==': 'eq', '!=': 'ne', '>=': 'ge', '>': 'gt', '<=': 'le', '<': 'lt'}
         self.load_temp(val1, type)
         self.load_temp(val2, type)
         if type in ['int', 'integer', 'boolean']:
@@ -433,6 +433,22 @@ class Generator:
         )
         return self.store_val("float")
 
+    def enter_while(self, loop_idx):
+        self.__write(
+            """
+            enter_while{}:
+            """.format(loop_idx)
+        )
+        return "iload {}\n" + "ldc 1\nif_icmpne break{}".format(loop_idx)
+
+    def exit_while(self, loop_idx):
+        self.__write(
+            """
+            goto enter_while{}
+            break{}:
+            """.format(loop_idx, loop_idx)
+        )
+
     def enter_for(self, loop_idx, one_expr, id):
         if one_expr:
             self.__write(
@@ -468,16 +484,16 @@ class Generator:
         self.load_temp(end, 'int')
         self.__write(
             """
-            if_icmpge continue{}
+            if_icmpge break{}
             goto enter_for{}
-            continue{}:
+            break{}:
             """.format(loop_idx, loop_idx, loop_idx)
         )
 
     def break_loop(self, break_point):
         self.__write(
             """
-            goto continue{}
+            goto break{}
             """.format(break_point)
         )
 
