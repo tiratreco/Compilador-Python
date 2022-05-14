@@ -1,9 +1,18 @@
-int a;
-main():
-    a = 0;
-    while a < 4 or False:
-        print a;
-        a = a + 1;
-        break;
+int numero;
+
+def int fatorial (int fat):
+    if fat > 1:
+        print fat;
+        return fat * fatorial(fat - 1);
+    } else:
+        return 1;
     }
+}
+def void resultado (int valor):
+    print "Resultado: ", valor;
+}
+main():
+    print "Fatorial de N. Digite o numero?";
+    numero = input();
+    resultado (fatorial (numero));
 }

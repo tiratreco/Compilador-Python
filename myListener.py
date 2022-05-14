@@ -40,7 +40,7 @@ class myListener(pyGramListener):
         for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[1:])):
             if arg_id.getText() in self.symbol_table:
                 raise AlreadyDeclaredError(ctx.start.line, arg_id.getText())
-            self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True, function=True)
+            self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True)
             args.append(arg_type.getText())
             args_names.append(arg_id.getText())
 
@@ -50,15 +50,24 @@ class myListener(pyGramListener):
     def enterL_void(self, ctx: pyGramParser.L_voidContext):
         self.stack_block.append('function')
         function_id = ctx.ID(0).getText()
-        self.symbol_table[function_id] = Id(type='NoneType', function=True)
+        if function_id in self.symbol_table:
+            raise AlreadyDeclaredError(ctx.start.line, function_id)
+
+        self.symbol_table[function_id] = Id(type="NoneType")
+        # if self.symbol_table[function_id].type == 'int':
+        #     self.symbol_table[function_id].type = 'integer'
 
         args = []
-        for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE())):
+        args_names = []
+        for arg_id, arg_type in list(zip(ctx.ID()[1:], ctx.TYPE()[0:])):
+            if arg_id.getText() in self.symbol_table:
+                raise AlreadyDeclaredError(ctx.start.line, arg_id.getText())
             self.symbol_table[arg_id.getText()] = Id(type=arg_type.getText(), local=True)
             args.append(arg_type.getText())
+            args_names.append(arg_id.getText())
 
         self.functions_args[function_id] = args
-        self.jasmin.enter_function(function_id)
+        self.jasmin.enter_function(function_id, args_names)
 
     def enterR_return(self, ctx: pyGramParser.R_returnContext):
         if not self.__is_inside_function():
@@ -72,6 +81,9 @@ class myListener(pyGramListener):
         ctx_id = ctx.ID().getText()
         if ctx_id not in self.symbol_table:
             raise UndeclaredVariable(ctx.start.line, ctx_id)
+
+    def enterR_if(self, ctx:pyGramParser.R_ifContext):
+        ctx.expr().inh_type = 'if'
 
     def enterR_for(self, ctx: pyGramParser.R_forContext):
         ctx_id = ctx.ID().getText()
@@ -109,6 +121,7 @@ class myListener(pyGramListener):
     def exitR_if(self, ctx: pyGramParser.R_ifContext):
         if ctx.expr().type != 'boolean':
             raise UnexpectedTypeError(ctx.start.line, 'boolean', ctx.expr().type)
+        self.jasmin.make_label('if_' + str(ctx.expr().end_label))
 
     def exitL_type(self, ctx: pyGramParser.L_typeContext):
         # saindo da função antes de apagar referencias que podem ser importantes
@@ -120,11 +133,13 @@ class myListener(pyGramListener):
         #     del self.symbol_table[arg_id.getText()]
 
     def exitL_void(self, ctx: pyGramParser.L_voidContext):
+        self.jasmin.do_return(None, 'NoneType')
         self.jasmin.exit_function()
+
         self.stack_block.pop()
 
-        for arg_id in ctx.ID()[1:]:
-            del self.symbol_table[arg_id.getText()]
+        # for arg_id in ctx.ID()[1:]:
+        #     del self.symbol_table[arg_id.getText()]
 
     def exitFunction_call(self, ctx: pyGramParser.Function_callContext):
         function_id = ctx.ID().getText()
@@ -212,6 +227,8 @@ class myListener(pyGramListener):
             self.jasmin.write_inh(ctx.inh)
         elif ctx.inh_type == 'while':
             self.jasmin.write_inh(ctx.inh.format(ctx.val))
+        elif ctx.inh_type == 'if':
+            ctx.end_label = self.jasmin.enter_if(ctx.val)
 
     def exitAnd_logic(self, ctx: pyGramParser.Or_logicContext):
         if ctx.term().type != 'boolean':

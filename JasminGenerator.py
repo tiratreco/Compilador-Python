@@ -21,6 +21,7 @@ class Generator:
         self.start_file()
         self.symbol_table = symbol_table
         self.top_index = 0
+        self.label_count = 0
 
     def close_file(self):
         self.file.close()
@@ -74,10 +75,9 @@ class Generator:
             .limit locals {}
             """.format(name, param, type_convert(self.symbol_table[name].type), self.MAX_LOCALS)
         )
-        for p in parameters:
-            self.symbol_table[p].address = self.top_index
+        for idx, p in enumerate(parameters):
+            self.symbol_table[p].address = idx
             self.symbol_table[p].local = True
-            self.top_index += 1
 
     def exit_function(self):
         self.__write(
@@ -100,8 +100,16 @@ class Generator:
         return self.store_val(func_type)
 
     def do_return(self, val, type):
-        self.load_temp(val, type)
         return_type = type_convert(type)
+        if (return_type == 'V'):
+            self.__write(
+                """
+                return
+                """
+            )
+            return
+
+        self.load_temp(val, type)
         if return_type == 'I':
             self.__write(
                 """
@@ -499,3 +507,21 @@ class Generator:
 
     def write_inh(self, line):
         self.__write(line)
+
+    def enter_if(self, id):
+        self.load_temp(id, 'integer')
+        self.__write(
+            """
+            ldc 0
+            if_icmpeq if_{}
+            """.format(self.label_count)
+        )
+        self.label_count += 1
+        return self.label_count - 1
+
+    def make_label(self, label_name):
+        self.__write(
+            """
+            {}:
+            """.format(label_name)
+        )
